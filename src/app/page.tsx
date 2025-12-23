@@ -76,7 +76,7 @@ export default function Home() {
   if (showPasswordInput) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="w-full max-w-md bg-white rounded-lg shadow-xl p-8 fade-in">
+        <div className="w-full max-w-md card p-8 fade-in">
           <h1 className="text-3xl font-bold mb-2 text-center themed-header">
             电子礼簿系统
           </h1>
@@ -85,7 +85,7 @@ export default function Home() {
           </p>
 
           {selectedEvent && (
-            <div className="mb-4 p-3 bg-blue-50 rounded border border-blue-200 text-sm">
+            <div className="mb-4 p-3 card text-sm">
               <div className="font-bold text-gray-700">{selectedEvent.name}</div>
               <div className="text-gray-600 mt-1">
                 {selectedEvent.startDateTime} ~ {selectedEvent.endDateTime}
@@ -104,7 +104,7 @@ export default function Home() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="请输入密码"
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="themed-ring"
                 autoFocus
               />
             </div>
@@ -112,13 +112,13 @@ export default function Home() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full themed-button-primary p-3 rounded-lg font-bold"
+              className="w-full themed-button-primary p-3 rounded-lg font-bold hover-lift"
             >
               {loading ? '登录中...' : '登录'}
             </button>
 
             {events.length > 1 && (
-              <div className="pt-4 border-t">
+              <div className="pt-4 border-t themed-border">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   选择其他事项
                 </label>
@@ -128,7 +128,7 @@ export default function Home() {
                     const event = events.find(ev => ev.id === e.target.value);
                     setSelectedEvent(event);
                   }}
-                  className="w-full px-4 py-2 border rounded-lg"
+                  className="themed-ring"
                 >
                   {events.map(ev => (
                     <option key={ev.id} value={ev.id}>
@@ -146,7 +146,7 @@ export default function Home() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="text-center fade-in">
+      <div className="text-center fade-in-slow">
         <h1 className="text-4xl font-bold mb-4 themed-header">电子礼簿系统</h1>
         <p className="text-gray-600">正在初始化...</p>
         <div className="mt-8 text-sm text-gray-500">

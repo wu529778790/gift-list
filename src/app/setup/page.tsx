@@ -179,13 +179,13 @@ export default function SetupPage() {
 
           {/* 更多设置 */}
           <details className="group">
-            <summary className="cursor-pointer text-sm font-medium text-gray-600 group-hover:text-gray-900 list-none">
+            <summary className="cursor-pointer text-sm font-medium text-gray-700 group-hover:text-gray-900 list-none">
               <div className="flex items-center">
                 <span>更多设置</span>
                 <span className="text-lg ml-1 transition-transform transform group-open:rotate-180">▼</span>
               </div>
             </summary>
-            <div className="mt-4 p-4 bg-gray-50 rounded-lg border themed-border space-y-4">
+            <div className="mt-4 p-4 card themed-border space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">界面风格</label>
                 <select
@@ -229,7 +229,7 @@ export default function SetupPage() {
                 </label>
 
                 {formData.githubSync && (
-                  <div className="mt-3 space-y-3 bg-blue-50 p-4 rounded-lg">
+                  <div className="mt-3 space-y-3 card p-4">
                     <p className="text-sm text-blue-800">
                       数据将加密存储在你的 GitHub 仓库中，支持多设备同步
                     </p>
@@ -282,7 +282,7 @@ export default function SetupPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full themed-button-primary p-3 rounded-lg transition duration-300 font-bold"
+            className="w-full themed-button-primary p-3 rounded-lg transition duration-300 font-bold hover-lift"
           >
             {loading ? '创建中...' : '创建并进入'}
           </button>

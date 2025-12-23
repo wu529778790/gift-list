@@ -223,7 +223,7 @@ export default function MainPage() {
     <div className={`min-h-screen bg-gray-50 ${themeClass}`}>
       <div className="max-w-7xl mx-auto p-4 space-y-4">
         {/* 头部 */}
-        <div className="bg-white p-4 rounded-lg shadow-lg themed-border border themed-bg-light">
+        <div className="card themed-bg-light p-4">
           <div className="flex justify-between items-center flex-wrap gap-4">
             <div>
               <h1 className="text-2xl font-bold themed-header">{event.name}</h1>
@@ -235,19 +235,19 @@ export default function MainPage() {
             <div className="flex gap-2 flex-wrap no-print">
               <button
                 onClick={exportPDF}
-                className="themed-button-primary px-4 py-2 rounded-lg"
+                className="themed-button-primary px-4 py-2 rounded-lg hover-lift"
               >
                 打印/PDF
               </button>
               <button
                 onClick={exportExcel}
-                className="themed-button-secondary border px-4 py-2 rounded-lg"
+                className="themed-button-secondary px-4 py-2 rounded-lg hover-lift"
               >
                 导出Excel
               </button>
               <button
                 onClick={openGuestScreen}
-                className="themed-button-secondary border px-4 py-2 rounded-lg"
+                className="themed-button-secondary px-4 py-2 rounded-lg hover-lift"
               >
                 开启副屏
               </button>
@@ -258,7 +258,7 @@ export default function MainPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* 左侧：录入表单 */}
           <div className="lg:col-span-1">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
+            <div className="card p-6">
               <h2 className="text-2xl font-bold mb-4 text-center border-b pb-2 themed-header">礼金录入</h2>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -336,7 +336,7 @@ export default function MainPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full themed-button-primary p-3 rounded-lg font-bold text-lg"
+                  className="w-full themed-button-primary p-3 rounded-lg font-bold text-lg hover-lift"
                 >
                   {loading ? '录入中...' : '确认录入'}
                 </button>
@@ -383,7 +383,7 @@ export default function MainPage() {
                   <button
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
-                    className="themed-button-primary p-2 disabled:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center"
+                    className="themed-button-primary p-2 disabled:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center hover-lift"
                   >
                     ←
                   </button>
@@ -403,14 +403,14 @@ export default function MainPage() {
                           )
                         )
                       }
-                      className="w-4 text-center border rounded mx-1 text-xs p-1 h-5"
+                      className="w-10 text-center border themed-ring text-xs p-1 h-6"
                     />
                     / {totalPages} 页
                   </div>
                   <button
                     onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                     disabled={currentPage === totalPages}
-                    className="themed-button-primary p-2 disabled:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center"
+                    className="themed-button-primary p-2 disabled:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center hover-lift"
                   >
                     →
                   </button>
