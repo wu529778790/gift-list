@@ -10,15 +10,223 @@
 
 @layer base {
   body {
-    @apply bg-gray-50;
+    @apply bg-gray-50 font-sans;
   }
 }
 
+/* 字体工具类 */
 .font-kaiti {
   font-family: 'KaiTi', '楷体', serif;
 }
 
-/* 打印样式 */
+/* ==================== 主题变量 ==================== */
+:root,
+.theme-festive {
+  --primary-color: #c00;
+  --primary-color-hover: #a00;
+  --primary-text-color: #c00;
+  --primary-bg-light: #fff2f2;
+  --primary-border-color: #ffaaaa;
+  --primary-ring-color: #ef4444;
+  --header-text-color: #b91c1c;
+  --button-bg-color: #dc2626;
+  --button-bg-hover: #b91c1c;
+  --button-border-color: #dc2626;
+  --button-text-color: #dc2626;
+  --link-hover-bg: #fee2e2;
+  --total-text-color: #ef4444;
+}
+
+.theme-solemn {
+  --primary-color: #374151;
+  --primary-color-hover: #1f2937;
+  --primary-text-color: #111827;
+  --primary-bg-light: #f3f4f6;
+  --primary-border-color: #d1d5db;
+  --primary-ring-color: #4b5563;
+  --header-text-color: #1f2937;
+  --button-bg-color: #4b5563;
+  --button-bg-hover: #374151;
+  --button-border-color: #4b5563;
+  --button-text-color: #4b5563;
+  --link-hover-bg: #e5e7eb;
+  --total-text-color: #374151;
+}
+
+/* ==================== 主题组件样式 ==================== */
+.themed-header {
+  color: var(--header-text-color);
+}
+
+.themed-button-primary {
+  @apply font-bold transition-all duration-300;
+  background-color: var(--button-bg-color);
+  color: white;
+}
+
+.themed-button-primary:hover:not(:disabled) {
+  background-color: var(--button-bg-hover);
+  @apply shadow-lg transform -translate-y-0.5;
+}
+
+.themed-button-primary:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.themed-button-secondary {
+  @apply font-medium transition-all duration-300;
+  border-color: var(--button-border-color);
+  color: var(--button-text-color);
+}
+
+.themed-button-secondary:hover {
+  background-color: var(--link-hover-bg);
+}
+
+.themed-ring {
+  /* 使用全局输入框样式，只自定义焦点环颜色 */
+}
+
+.themed-ring:focus {
+  --tw-ring-color: var(--primary-ring-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.themed-text {
+  color: var(--total-text-color);
+}
+
+.themed-border {
+  border-color: var(--primary-border-color);
+}
+
+.themed-bg-light {
+  background-color: var(--primary-bg-light);
+}
+
+/* ==================== 礼簿框架样式 ==================== */
+.gift-book-frame {
+  border: 4px solid var(--primary-color);
+  padding: 22px;
+  border-radius: 10px;
+  background-color: var(--primary-bg-light);
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  cursor: default;
+  min-height: 450px;
+}
+
+/* ==================== 表单输入基础样式 ==================== */
+/* 所有输入框统一基础样式 */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+input[type="password"],
+input[type="email"],
+textarea,
+select {
+  @apply w-full p-3 border border-gray-300 rounded-lg transition-all duration-200 bg-white;
+  border-color: var(--primary-border-color, #d1d5db);
+}
+
+/* 悬停效果 */
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="date"]:hover,
+input[type="time"]:hover,
+input[type="password"]:hover,
+input[type="email"]:hover,
+textarea:hover,
+select:hover {
+  border-color: var(--primary-color, #374151);
+  @apply shadow-sm;
+}
+
+/* 焦点效果 */
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary-color, #374151);
+  --tw-ring-color: var(--primary-ring-color, #4b5563);
+  @apply ring-2 shadow-md;
+}
+
+/* 占位符样式 */
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* 禁用状态 */
+input:disabled,
+textarea:disabled,
+select:disabled {
+  @apply bg-gray-100 cursor-not-allowed opacity-60;
+}
+
+/* ==================== 主题化输入框 ==================== */
+/* 使用 themed-ring 的输入框会获得主题焦点环 */
+.themed-ring {
+  /* 确保宽度和基础样式 */
+  width: 100%;
+  padding: 0.75rem; /* p-3 */
+  border-width: 1px;
+  border-radius: 0.5rem; /* rounded-lg */
+  transition: all 0.2s ease;
+  background-color: white;
+  border-color: var(--primary-border-color, #d1d5db);
+}
+
+/* 悬停效果 */
+.themed-ring:hover {
+  border-color: var(--primary-color, #374151);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* 焦点效果 */
+.themed-ring:focus {
+  outline: none;
+  border-color: var(--primary-color, #374151);
+  --tw-ring-color: var(--primary-ring-color, #4b5563) !important;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+/* 占位符 */
+.themed-ring::placeholder {
+  color: #9ca3af;
+}
+
+/* 禁用状态 */
+.themed-ring:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* 单选框和复选框 */
+input[type="radio"].themed-ring,
+input[type="checkbox"].themed-ring {
+  @apply w-4 h-4;
+  accent-color: var(--primary-color);
+}
+
+input[type="radio"].themed-ring:focus,
+input[type="checkbox"].themed-ring:focus {
+  @apply ring-2;
+  --tw-ring-color: var(--primary-ring-color);
+}
+
+/* ==================== 打印样式 ==================== */
 @media print {
   body * {
     visibility: hidden;
@@ -35,5 +243,138 @@
   }
   .no-print {
     display: none !important;
+  }
+}
+
+/* ==================== 礼簿表格样式 ==================== */
+.gift-book-grid {
+  display: grid;
+  grid-template-rows: 3fr 1fr 3fr;
+  border-top: 2px solid var(--primary-border-color);
+  min-height: 0;
+}
+
+.gift-book-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.gift-book-row:nth-child(1),
+.gift-book-row:nth-child(3) {
+  min-height: 33.3%;
+}
+
+.book-cell {
+  border-right: 2px solid var(--primary-border-color);
+  border-bottom: 2px solid var(--primary-border-color);
+  display: grid;
+  place-items: center;
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+  font-weight: bold;
+  font-size: clamp(16px, 1.6vw, 25px);
+  letter-spacing: 7px;
+  font-family: 'KaiTi', '楷体', serif;
+  padding: 10px 0;
+  overflow: hidden;
+  text-align: center;
+  min-width: 0;
+  position: relative;
+  line-height: 1.2;
+}
+
+.book-cell:first-child {
+  border-left: 2px solid var(--primary-border-color);
+}
+
+.book-cell:hover {
+  background-color: var(--link-hover-bg);
+}
+
+.name-cell .name {
+  color: #333;
+  padding: 15px 0;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  min-height: 8em;
+  font-size: 25px;
+  font-family: 'KaiTi', '楷体', serif;
+}
+
+.type-cell {
+  color: var(--primary-color);
+  font-size: 22px;
+  padding: 10px 4px;
+  font-family: 'Source Han Serif CN Heavy', serif;
+  font-weight: bold;
+}
+
+.amount-cell {
+  color: #333;
+  cursor: pointer;
+  grid-template-columns: 1fr auto;
+  column-gap: 12px;
+  justify-content: center;
+}
+
+.amount-chinese {
+  letter-spacing: 1.5px;
+  text-align: center;
+  padding: 15px 0;
+  flex: 1;
+  overflow: hidden;
+  font-size: 25px;
+  color: #333;
+  font-family: 'KaiTi', '楷体', serif;
+}
+
+.amount-number {
+  font-size: 12px;
+  color: #666;
+}
+
+/* ==================== 动画和过渡 ==================== */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== 响应式调整 ==================== */
+@media (max-width: 768px) {
+  .gift-book-frame {
+    padding: 12px;
+    min-height: 300px;
+  }
+
+  .book-cell {
+    font-size: 14px;
+    letter-spacing: 4px;
+    padding: 6px 0;
+  }
+
+  .name-cell .name {
+    font-size: 18px;
+    min-height: 6em;
+  }
+
+  .type-cell {
+    font-size: 16px;
+  }
+
+  .amount-chinese {
+    font-size: 18px;
+    padding: 10px 0;
   }
 }

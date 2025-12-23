@@ -17,7 +17,7 @@ export default function SetupPage() {
     endDate: Utils.getCurrentDateTime().date,
     endTime: '22:00',
     password: '',
-    theme: 'festive' as const,
+    theme: 'festive' as 'festive' | 'solemn',
     recorder: '',
     githubSync: false,
     githubOwner: '',
@@ -90,94 +90,104 @@ export default function SetupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-xl p-8">
-        <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">
-          创建新事项
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-2xl bg-white rounded-lg shadow-xl p-8 fade-in">
+        <h1 className="text-3xl font-bold mb-6 text-center themed-header">
+          电子礼簿系统
         </h1>
+        <h2 className="text-xl font-semibold mb-6 text-center border-b pb-2">
+          创建新事项
+        </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* 基本信息 */}
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">事项名称</label>
-              <input
-                required
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                placeholder="张三李四新婚之喜"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">事项名称</label>
+            <input
+              required
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              placeholder="例如: 张三李四新婚之喜"
+              className="themed-ring"
+            />
+          </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-2">管理密码</label>
-              <input
-                required
-                type="password"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-                placeholder="请牢记，丢失无法找回"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">开始时间</label>
-                <div className="flex gap-2">
-                  <input
-                    type="date"
-                    required
-                    value={formData.startDate}
-                    onChange={(e) =>
-                      setFormData({ ...formData, startDate: e.target.value })
-                    }
-                    className="w-1/2 p-2 border rounded"
-                  />
-                  <input
-                    type="time"
-                    required
-                    value={formData.startTime}
-                    onChange={(e) =>
-                      setFormData({ ...formData, startTime: e.target.value })
-                    }
-                    className="w-1/2 p-2 border rounded"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">结束时间</label>
-                <div className="flex gap-2">
-                  <input
-                    type="date"
-                    required
-                    value={formData.endDate}
-                    onChange={(e) =>
-                      setFormData({ ...formData, endDate: e.target.value })
-                    }
-                    className="w-1/2 p-2 border rounded"
-                  />
-                  <input
-                    type="time"
-                    required
-                    value={formData.endTime}
-                    onChange={(e) =>
-                      setFormData({ ...formData, endTime: e.target.value })
-                    }
-                    className="w-1/2 p-2 border rounded"
-                  />
-                </div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">开始时间</label>
+              <div className="flex gap-2">
+                <input
+                  type="date"
+                  required
+                  value={formData.startDate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, startDate: e.target.value })
+                  }
+                  className="themed-ring"
+                />
+                <input
+                  type="time"
+                  required
+                  value={formData.startTime}
+                  onChange={(e) =>
+                    setFormData({ ...formData, startTime: e.target.value })
+                  }
+                  className="themed-ring"
+                />
               </div>
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">结束时间</label>
+              <div className="flex gap-2">
+                <input
+                  type="date"
+                  required
+                  value={formData.endDate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, endDate: e.target.value })
+                  }
+                  className="themed-ring"
+                />
+                <input
+                  type="time"
+                  required
+                  value={formData.endTime}
+                  onChange={(e) =>
+                    setFormData({ ...formData, endTime: e.target.value })
+                  }
+                  className="themed-ring"
+                />
+              </div>
+            </div>
+          </div>
 
-            <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">管理密码</label>
+            <input
+              required
+              type="password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              placeholder="请牢记，丢失无法找回"
+              className="themed-ring"
+            />
+          </div>
+
+          {/* 更多设置 */}
+          <details className="group">
+            <summary className="cursor-pointer text-sm font-medium text-gray-600 group-hover:text-gray-900 list-none">
+              <div className="flex items-center">
+                <span>更多设置</span>
+                <span className="text-lg ml-1 transition-transform transform group-open:rotate-180">▼</span>
+              </div>
+            </summary>
+            <div className="mt-4 p-4 bg-gray-50 rounded-lg border themed-border space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-2">界面主题</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">界面风格</label>
                 <select
                   value={formData.theme}
                   onChange={(e) =>
@@ -186,85 +196,93 @@ export default function SetupPage() {
                       theme: e.target.value as 'festive' | 'solemn',
                     })
                   }
-                  className="w-full p-2 border rounded"
+                  className="themed-ring"
                 >
                   <option value="festive">喜庆红 (喜事)</option>
                   <option value="solemn">肃穆灰 (白事)</option>
                 </select>
+                <p className="text-xs text-gray-500 mt-1">为不同性质的事项选择合适的界面配色风格。</p>
               </div>
+
               <div>
-                <label className="block text-sm font-medium mb-2">
-                  记账人 (选填)
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">记账人</label>
                 <input
                   value={formData.recorder}
                   onChange={(e) =>
                     setFormData({ ...formData, recorder: e.target.value })
                   }
-                  placeholder="王五"
-                  className="w-full p-2 border rounded"
+                  placeholder="记账人 (例如: 王五，选填)"
+                  className="themed-ring"
                 />
+              </div>
+
+              <div>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.githubSync}
+                    onChange={(e) =>
+                      setFormData({ ...formData, githubSync: e.target.checked })
+                    }
+                  />
+                  <span className="font-medium">启用 GitHub 云端同步</span>
+                </label>
+
+                {formData.githubSync && (
+                  <div className="mt-3 space-y-3 bg-blue-50 p-4 rounded-lg">
+                    <p className="text-sm text-blue-800">
+                      数据将加密存储在你的 GitHub 仓库中，支持多设备同步
+                    </p>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">GitHub 用户名</label>
+                      <input
+                        required={formData.githubSync}
+                        placeholder="owner"
+                        value={formData.githubOwner}
+                        onChange={(e) =>
+                          setFormData({ ...formData, githubOwner: e.target.value })
+                        }
+                        className="themed-ring"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">仓库名</label>
+                      <input
+                        required={formData.githubSync}
+                        placeholder="repo"
+                        value={formData.githubRepo}
+                        onChange={(e) =>
+                          setFormData({ ...formData, githubRepo: e.target.value })
+                        }
+                        className="themed-ring"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Personal Access Token</label>
+                      <input
+                        required={formData.githubSync}
+                        type="password"
+                        placeholder="ghp_..."
+                        value={formData.githubToken}
+                        onChange={(e) =>
+                          setFormData({ ...formData, githubToken: e.target.value })
+                        }
+                        className="themed-ring"
+                      />
+                    </div>
+                    <p className="text-xs text-gray-600">
+                      需要 repo 权限。数据将保存在 data/ 目录下。
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
-
-          {/* GitHub 同步（可选） */}
-          <div className="border-t pt-6">
-            <label className="flex items-center gap-2 mb-4 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={formData.githubSync}
-                onChange={(e) =>
-                  setFormData({ ...formData, githubSync: e.target.checked })
-                }
-              />
-              <span className="font-medium">启用 GitHub 云端同步</span>
-            </label>
-
-            {formData.githubSync && (
-              <div className="space-y-3 bg-blue-50 p-4 rounded-lg">
-                <p className="text-sm text-blue-800 mb-2">
-                  数据将加密存储在你的 GitHub 仓库中，支持多设备同步
-                </p>
-                <input
-                  required={formData.githubSync}
-                  placeholder="GitHub 用户名 (owner)"
-                  value={formData.githubOwner}
-                  onChange={(e) =>
-                    setFormData({ ...formData, githubOwner: e.target.value })
-                  }
-                  className="w-full p-2 border rounded"
-                />
-                <input
-                  required={formData.githubSync}
-                  placeholder="仓库名 (repo)"
-                  value={formData.githubRepo}
-                  onChange={(e) =>
-                    setFormData({ ...formData, githubRepo: e.target.value })
-                  }
-                  className="w-full p-2 border rounded"
-                />
-                <input
-                  required={formData.githubSync}
-                  type="password"
-                  placeholder="Personal Access Token (PAT)"
-                  value={formData.githubToken}
-                  onChange={(e) =>
-                    setFormData({ ...formData, githubToken: e.target.value })
-                  }
-                  className="w-full p-2 border rounded"
-                />
-                <p className="text-xs text-gray-600">
-                  需要 repo 权限。数据将保存在 data/ 目录下。
-                </p>
-              </div>
-            )}
-          </div>
+          </details>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50"
+            className="w-full themed-button-primary p-3 rounded-lg transition duration-300 font-bold"
           >
             {loading ? '创建中...' : '创建并进入'}
           </button>

@@ -23,7 +23,8 @@ export const Utils = {
     unit = unit.substr(unit.length - s.length);
 
     for (let i = 0; i < s.length; i++) {
-      str += '零壹贰叁肆伍陆柒捌玖'.charAt(s.charAt(i)) + unit.charAt(i);
+      const digit = parseInt(s.charAt(i), 10);
+      str += '零壹贰叁肆伍陆柒捌玖'.charAt(digit) + unit.charAt(i);
     }
 
     return str

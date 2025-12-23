@@ -203,59 +203,68 @@ export default function MainPage() {
 
   if (!event) return null;
 
+  // 根据主题应用不同的容器类
+  const themeClass = event.theme === 'festive' ? 'theme-festive' : 'theme-solemn';
+
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className={`min-h-screen bg-gray-50 ${themeClass}`}>
+      <div className="max-w-7xl mx-auto p-4 space-y-4">
         {/* 头部 */}
-        <div className="bg-white p-4 rounded-lg shadow flex justify-between items-center flex-wrap gap-4">
-          <div>
-            <h1 className="text-2xl font-bold">{event.name}</h1>
-            <p className="text-sm text-gray-500">
-              {event.startDateTime} ~ {event.endDateTime}
-              {event.recorder && ` | 记账人: ${event.recorder}`}
-            </p>
-          </div>
-          <div className="flex gap-2 flex-wrap">
-            <button
-              onClick={exportPDF}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-            >
-              打印/PDF
-            </button>
-            <button
-              onClick={exportExcel}
-              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-            >
-              导出Excel
-            </button>
-            <button
-              onClick={openGuestScreen}
-              className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
-            >
-              开启副屏
-            </button>
+        <div className="bg-white p-4 rounded-lg shadow-lg themed-border border themed-bg-light">
+          <div className="flex justify-between items-center flex-wrap gap-4">
+            <div>
+              <h1 className="text-2xl font-bold themed-header">{event.name}</h1>
+              <p className="text-sm text-gray-600 mt-1">
+                {event.startDateTime} ~ {event.endDateTime}
+                {event.recorder && ` | 记账人: ${event.recorder}`}
+              </p>
+            </div>
+            <div className="flex gap-2 flex-wrap no-print">
+              <button
+                onClick={exportPDF}
+                className="themed-button-primary px-4 py-2 rounded-lg"
+              >
+                打印/PDF
+              </button>
+              <button
+                onClick={exportExcel}
+                className="themed-button-secondary border px-4 py-2 rounded-lg"
+              >
+                导出Excel
+              </button>
+              <button
+                onClick={openGuestScreen}
+                className="themed-button-secondary border px-4 py-2 rounded-lg"
+              >
+                开启副屏
+              </button>
+            </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* 左侧：录入表单 */}
           <div className="lg:col-span-1">
-            <div className="bg-white p-4 rounded-lg shadow">
-              <h2 className="text-xl font-bold mb-4">礼金录入</h2>
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h2 className="text-2xl font-bold mb-4 text-center border-b pb-2 themed-header">礼金录入</h2>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <input
-                  id="name-input"
-                  required
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  placeholder="姓名"
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                  autoFocus
-                />
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">姓名</label>
+                  <input
+                    id="name-input"
+                    required
+                    value={formData.name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
+                    placeholder="来宾姓名"
+                    className="themed-ring"
+                    autoFocus
+                  />
+                </div>
 
                 <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">金额</label>
                   <input
                     required
                     type="number"
@@ -263,87 +272,109 @@ export default function MainPage() {
                     value={formData.amount}
                     onChange={(e) => handleAmountChange(e.target.value)}
                     placeholder="金额 (元)"
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="themed-ring"
                   />
                   {chineseAmount && (
-                    <div className="text-sm text-gray-600 mt-1 text-right">
+                    <div className="text-sm text-gray-600 mt-1 text-right themed-text">
                       {chineseAmount}
                     </div>
                   )}
                 </div>
 
-                <div className="flex gap-3 flex-wrap">
-                  {['现金', '微信', '支付宝', '其他'].map((type) => (
-                    <label
-                      key={type}
-                      className="flex items-center gap-2 cursor-pointer"
-                    >
-                      <input
-                        type="radio"
-                        name="type"
-                        value={type}
-                        checked={formData.type === type}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            type: e.target.value as any,
-                          })
-                        }
-                      />
-                      <span>{type}</span>
-                    </label>
-                  ))}
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
+                  <label className="text-sm font-medium text-gray-700 whitespace-nowrap">收款类型：</label>
+                  <div className="flex flex-wrap gap-x-3 gap-y-2">
+                    {['现金', '微信', '支付宝', '其他'].map((type) => (
+                      <label
+                        key={type}
+                        className="flex items-center space-x-2 cursor-pointer"
+                      >
+                        <input
+                          type="radio"
+                          name="type"
+                          value={type}
+                          checked={formData.type === type}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              type: e.target.value as any,
+                            })
+                          }
+                          className="themed-ring"
+                        />
+                        <span>{type}</span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
 
-                <input
-                  value={formData.remark}
-                  onChange={(e) =>
-                    setFormData({ ...formData, remark: e.target.value })
-                  }
-                  placeholder="备注 (选填)"
-                  className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
-                />
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">备注</label>
+                  <input
+                    value={formData.remark}
+                    onChange={(e) =>
+                      setFormData({ ...formData, remark: e.target.value })
+                    }
+                    placeholder="备注内容（选填）"
+                    className="themed-ring"
+                  />
+                </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50"
+                  className="w-full themed-button-primary p-3 rounded-lg font-bold text-lg"
                 >
                   {loading ? '录入中...' : '确认录入'}
                 </button>
               </form>
-            </div>
 
-            {/* 统计 */}
-            <div className="mt-4 bg-white p-4 rounded-lg shadow space-y-2">
-              <div className="text-sm text-gray-600">
-                <span className="font-bold">本页小计:</span>{' '}
-                {Utils.formatCurrency(pageSubtotal)}
-              </div>
-              <div className="text-sm text-gray-600">
-                <span className="font-bold">总金额:</span>{' '}
-                {Utils.formatCurrency(totalAmount)}
-              </div>
-              <div className="text-sm text-gray-600">
-                <span className="font-bold">总人数:</span> {totalGivers}
+              {/* 统计 */}
+              <div className="mt-6 pt-6 border-t themed-border space-y-2">
+                <div className="text-sm text-gray-600">
+                  <span className="font-bold">本页小计:</span>{' '}
+                  <span className="text-xl font-bold themed-text">{Utils.formatCurrency(pageSubtotal)}</span>
+                </div>
+                <div className="text-sm text-gray-600">
+                  <span className="font-bold">总金额:</span>{' '}
+                  <span className="text-xl font-bold themed-text">{Utils.formatCurrency(totalAmount)}</span>
+                </div>
+                <div className="text-sm text-gray-600">
+                  <span className="font-bold">总人数:</span>{' '}
+                  <span className="text-xl font-bold themed-text">{totalGivers}</span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* 右侧：礼簿展示 */}
           <div className="lg:col-span-2">
-            <div className="bg-white p-4 rounded-lg shadow print-area">
+            <div className="gift-book-frame print-area">
               {/* 页码导航 */}
-              <div className="flex justify-between items-center mb-4 pb-4 border-b no-print">
-                <div className="flex gap-2 items-center">
+              <div className="flex justify-between items-center mb-4 pb-4 border-b themed-border no-print">
+                <div className="flex items-center flex-wrap gap-x-4">
+                  <div>
+                    <span className="font-bold text-md">本页小计:</span>{' '}
+                    <span className="text-xl font-bold themed-text">{Utils.formatCurrency(pageSubtotal)}</span>
+                  </div>
+                  <div>
+                    <span className="font-bold text-md">总金额:</span>{' '}
+                    <span className="text-xl font-bold themed-text">{Utils.formatCurrency(totalAmount)}</span>
+                  </div>
+                  <div>
+                    <span className="font-bold text-md">总人数:</span>{' '}
+                    <span className="text-xl font-bold themed-text">{totalGivers}</span>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2 text-lg">
                   <button
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
-                    className="px-3 py-1 bg-blue-600 text-white rounded disabled:opacity-50"
+                    className="themed-button-primary p-2 disabled:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center"
                   >
                     ←
                   </button>
-                  <span>
+                  <div className="font-bold flex items-center">
                     第
                     <input
                       type="number"
@@ -359,70 +390,77 @@ export default function MainPage() {
                           )
                         )
                       }
-                      className="w-16 text-center border rounded mx-1"
+                      className="w-16 text-center border rounded mx-1 themed-ring"
                     />
                     / {totalPages} 页
-                  </span>
+                  </div>
                   <button
                     onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                     disabled={currentPage === totalPages}
-                    className="px-3 py-1 bg-blue-600 text-white rounded disabled:opacity-50"
+                    className="themed-button-primary p-2 disabled:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center"
                   >
                     →
                   </button>
                 </div>
               </div>
 
-              {/* 礼簿表格 */}
-              <div className="space-y-2">
-                {/* 填充到12个 */}
-                {Array.from({ length: ITEMS_PER_PAGE }).map((_, idx) => {
-                  const gift = displayGifts[idx];
-                  const hasData = gift && gift.data;
+              {/* 礼簿内容 - 使用网格布局 */}
+              <div className="gift-book-grid">
+                {Array.from({ length: 3 }).map((_, rowIdx) => (
+                  <div key={rowIdx} className="gift-book-row">
+                    {Array.from({ length: 12 }).map((_, colIdx) => {
+                      const idx = rowIdx * 12 + colIdx;
+                      const gift = displayGifts[idx];
+                      const hasData = gift && gift.data;
 
-                  return (
-                    <div key={idx} className="grid grid-cols-12 gap-1 text-center">
-                      {/* 名字 */}
-                      <div className="col-span-4 border-2 border-red-500 min-h-[60px] flex items-center justify-center p-1">
-                        {hasData ? (
-                          <div className="font-bold text-lg font-kaiti">
-                            {gift.data!.name.length === 2
-                              ? `${gift.data!.name[0]}　${gift.data!.name[1]}`
-                              : gift.data!.name}
-                            {gift.data!.abolished && (
-                              <div className="text-red-600 text-xs">*作废</div>
+                      // 计算单元格类型：名字(4格)、类型(3格)、金额(5格)
+                      let cellType = '';
+                      if (colIdx < 4) cellType = 'name';
+                      else if (colIdx < 7) cellType = 'type';
+                      else cellType = 'amount';
+
+                      if (cellType === 'name') {
+                        return (
+                          <div key={colIdx} className="book-cell name-cell">
+                            {hasData ? (
+                              <div className="name">
+                                {gift.data!.name.length === 2
+                                  ? `${gift.data!.name[0]}　${gift.data!.name[1]}`
+                                  : gift.data!.name}
+                                {gift.data!.abolished && (
+                                  <div className="text-red-600 text-xs">*作废</div>
+                                )}
+                              </div>
+                            ) : (
+                              <span className="text-gray-300">+</span>
                             )}
                           </div>
-                        ) : (
-                          <span className="text-gray-300">+</span>
-                        )}
-                      </div>
-
-                      {/* 类型 */}
-                      <div className="col-span-3 border-2 border-red-500 min-h-[60px] flex items-center justify-center">
-                        {hasData && (
-                          <span className="text-red-600 font-bold">
-                            {gift.data!.type}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* 金额 */}
-                      <div className="col-span-5 border-2 border-red-500 min-h-[60px] flex flex-col items-center justify-center p-1">
-                        {hasData && (
-                          <>
-                            <div className="text-sm font-kaiti break-words">
-                              {Utils.amountToChinese(gift.data!.amount)}
-                            </div>
-                            <div className="text-xs text-gray-500">
-                              ¥{gift.data!.amount}
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+                        );
+                      } else if (cellType === 'type') {
+                        return (
+                          <div key={colIdx} className="book-cell type-cell">
+                            {hasData && gift.data!.type}
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <div key={colIdx} className="book-cell amount-cell">
+                            {hasData ? (
+                              <div className="flex flex-col items-center w-full">
+                                <div className="amount-chinese">
+                                  {Utils.amountToChinese(gift.data!.amount)}
+                                </div>
+                                <div className="amount-number">
+                                  ¥{gift.data!.amount}
+                                </div>
+                              </div>
+                            ) : null}
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
+                ))}
               </div>
 
               {displayGifts.length === 0 && (

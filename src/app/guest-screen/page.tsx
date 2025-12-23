@@ -32,83 +32,120 @@ export default function GuestScreen() {
 
   if (!data) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">等待主屏数据...</h1>
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="text-center fade-in">
+          <h1 className="text-2xl font-bold mb-4 themed-header">等待主屏数据...</h1>
           <p className="text-gray-600">请确保主屏已打开并录入数据</p>
         </div>
       </div>
     );
   }
 
+  // 应用主题
+  const themeClass = data.theme === 'theme-festive' ? 'theme-festive' : 'theme-solemn';
+
   return (
-    <div
-      className={`min-h-screen ${
-        data.theme === 'theme-festive' ? 'bg-red-50' : 'bg-gray-200'
-      } p-8`}
-    >
+    <div className={`min-h-screen ${themeClass} bg-gray-50`}>
       {/* 控制栏 */}
-      <div className="fixed top-4 right-4 flex gap-2 no-print">
+      <div className="fixed top-4 right-4 flex gap-2 no-print z-50">
         <button
           onClick={() => document.documentElement.requestFullscreen()}
-          className="px-3 py-1 bg-black/50 text-white rounded text-sm"
+          className="themed-button-secondary border px-3 py-1 rounded text-sm"
         >
           全屏
         </button>
       </div>
 
-      {/* 标题 */}
-      <h1 className="text-4xl font-bold text-center mb-8 text-red-700 font-kaiti">
-        {data.eventName}
-      </h1>
+      <div className="p-8">
+        {/* 标题 */}
+        <h1 className="text-4xl font-bold text-center mb-8 themed-header font-kaiti">
+          {data.eventName}
+        </h1>
 
-      {/* 礼簿表格 */}
-      <div className="max-w-5xl mx-auto border-8 border-red-600 rounded-2xl p-6 bg-white">
-        {/* 表头 */}
-        <div className="grid grid-cols-3 border-b-4 border-red-600 mb-4 pb-2 text-center text-xl font-bold text-red-700">
-          <div>姓名</div>
-          <div>类型</div>
-          <div>金额</div>
-        </div>
+        {/* 礼簿框架 - 使用 gift-book-frame 样式 */}
+        <div className="gift-book-frame max-w-6xl mx-auto">
+          {/* 表头 */}
+          <div className="grid grid-cols-12 gap-1 mb-4 pb-2 border-b-2 themed-border text-center font-bold text-lg">
+            <div className="col-span-4">姓名</div>
+            <div className="col-span-3">类型</div>
+            <div className="col-span-5">金额</div>
+          </div>
 
-        {/* 数据行 */}
-        <div className="space-y-2">
-          {data.gifts.map((gift, idx) => {
-            const isLatest = idx === data.gifts.length - 1;
-            return (
-              <div
-                key={gift.timestamp}
-                className={`
-                  grid grid-cols-3 text-center py-4 border-b border-red-200
-                  ${isLatest ? 'bg-yellow-100 animate-pulse' : ''}
-                `}
-              >
-                <div className="font-kaiti text-2xl font-bold">
-                  {gift.name.length === 2
-                    ? `${gift.name[0]}　${gift.name[1]}`
-                    : gift.name}
-                </div>
-                <div className="text-red-600 font-bold text-xl">{gift.type}</div>
-                <div className="text-gray-800">
-                  <div className="font-kaiti text-xl">
-                    {Utils.amountToChinese(gift.amount)}
-                  </div>
-                  <div className="text-sm text-gray-500">¥{gift.amount}</div>
-                </div>
+          {/* 数据行 - 使用 gift-book-grid 样式 */}
+          <div className="gift-book-grid">
+            {Array.from({ length: 3 }).map((_, rowIdx) => (
+              <div key={rowIdx} className="gift-book-row">
+                {Array.from({ length: 12 }).map((_, colIdx) => {
+                  const giftIdx = rowIdx * 12 + colIdx;
+                  const gift = data.gifts[giftIdx];
+                  const isLatest = giftIdx === data.gifts.length - 1;
+
+                  // 计算单元格类型：名字(4格)、类型(3格)、金额(5格)
+                  let cellType = '';
+                  if (colIdx < 4) cellType = 'name';
+                  else if (colIdx < 7) cellType = 'type';
+                  else cellType = 'amount';
+
+                  if (!gift) {
+                    return (
+                      <div key={colIdx} className="book-cell">
+                        <span className="text-gray-200">+</span>
+                      </div>
+                    );
+                  }
+
+                  if (cellType === 'name') {
+                    return (
+                      <div
+                        key={colIdx}
+                        className={`book-cell name-cell ${isLatest ? 'bg-yellow-100 animate-pulse' : ''}`}
+                      >
+                        <div className="name">
+                          {gift.name.length === 2
+                            ? `${gift.name[0]}　${gift.name[1]}`
+                            : gift.name}
+                        </div>
+                      </div>
+                    );
+                  } else if (cellType === 'type') {
+                    return (
+                      <div
+                        key={colIdx}
+                        className={`book-cell type-cell ${isLatest ? 'bg-yellow-100 animate-pulse' : ''}`}
+                      >
+                        {gift.type}
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div
+                        key={colIdx}
+                        className={`book-cell amount-cell ${isLatest ? 'bg-yellow-100 animate-pulse' : ''}`}
+                      >
+                        <div className="flex flex-col items-center w-full">
+                          <div className="amount-chinese">
+                            {Utils.amountToChinese(gift.amount)}
+                          </div>
+                          <div className="amount-number">
+                            ¥{gift.amount}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                })}
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
 
-        {data.gifts.length === 0 && (
-          <div className="text-center py-20 text-gray-400 text-xl">暂无记录</div>
-        )}
-      </div>
-
-      {/* 底部统计 */}
-      <div className="text-center mt-8 text-gray-600">
-        总计 {data.gifts.length} 人 | 总金额 ¥
-        {data.gifts.reduce((sum, g) => sum + g.amount, 0).toFixed(2)}
+        {/* 底部统计 */}
+        <div className="text-center mt-6 text-gray-600 text-lg">
+          <span className="font-bold themed-text">总计 {data.gifts.length} 人</span> |{' '}
+          <span className="font-bold themed-text">
+            总金额 ¥{data.gifts.reduce((sum, g) => sum + g.amount, 0).toFixed(2)}
+          </span>
+        </div>
       </div>
     </div>
   );
