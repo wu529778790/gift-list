@@ -64,13 +64,6 @@ export default function GuestScreen() {
 
         {/* 礼簿框架 - 使用 gift-book-frame 样式 */}
         <div className="gift-book-frame max-w-6xl mx-auto">
-          {/* 表头 */}
-          <div className="grid grid-cols-12 gap-1 mb-4 pb-2 border-b-2 themed-border text-center font-bold text-lg">
-            <div className="col-span-4">姓名</div>
-            <div className="col-span-3">类型</div>
-            <div className="col-span-5">金额</div>
-          </div>
-
           {/* 数据行 - 3行垂直布局：姓名、类型、大写金额 */}
           <div className="gift-book-grid">
             {/* 第1行：姓名（竖排） */}
@@ -133,14 +126,6 @@ export default function GuestScreen() {
               })}
             </div>
           </div>
-        </div>
-
-        {/* 底部统计 */}
-        <div className="text-center mt-6 text-gray-600 text-lg">
-          <span className="font-bold themed-text">总计 {data.gifts.length} 人</span> |{' '}
-          <span className="font-bold themed-text">
-            总金额 ¥{data.gifts.reduce((sum, g) => sum + g.amount, 0).toFixed(2)}
-          </span>
         </div>
       </div>
     </div>
