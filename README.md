@@ -5,7 +5,7 @@
 ## 🚀 一键部署
 
 ### GitHub Pages (免费)
-[![Deploy to GitHub Pages](https://github.com/shenzjd/libu/actions/workflows/deploy-to-github-pages.yml/badge.svg)](https://github.com/shenzjd/libu/actions/workflows/deploy-to-github-pages.yml)
+[![Deploy to GitHub Pages](https://github.com/wu529778790/libu.shenzjd.com/actions/workflows/deploy-to-github-pages.yml/badge.svg)](https://github.com/wu529778790/libu.shenzjd.com/actions/workflows/deploy-to-github-pages.yml)
 
 1. **Fork 这个仓库**
 2. **启用 GitHub Pages** (Settings → Pages → 选择 main 分支)
