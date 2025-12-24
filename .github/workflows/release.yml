@@ -199,9 +199,7 @@ jobs:
             - 支持数据加密存储
             - 支持副屏展示
 
-          files: |
-            release-package.tar.gz
-            out/**/*.{html,css,js,json,txt}
+          files: release-package.tar.gz
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
