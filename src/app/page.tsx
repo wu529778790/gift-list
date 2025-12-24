@@ -88,7 +88,14 @@ export default function Home() {
             <div className="mb-4 p-3 card text-sm">
               <div className="font-bold text-gray-700">{selectedEvent.name}</div>
               <div className="text-gray-600 mt-1">
-                {selectedEvent.startDateTime} ~ {selectedEvent.endDateTime}
+                {(() => {
+                  const formatEventTime = (dt: string) => {
+                    const date = new Date(dt);
+                    const pad = (num: number) => num.toString().padStart(2, '0');
+                    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+                  };
+                  return `${formatEventTime(selectedEvent.startDateTime)} ~ ${formatEventTime(selectedEvent.endDateTime)}`;
+                })()}
               </div>
             </div>
           )}

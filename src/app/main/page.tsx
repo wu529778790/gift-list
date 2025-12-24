@@ -190,13 +190,19 @@ export default function MainPage() {
 
   // 导出 Excel
   const exportExcel = () => {
-    const data = validGifts.map((g) => ({
-      姓名: g.name,
-      金额: g.amount,
-      类型: g.type,
-      备注: g.remark || '',
-      时间: g.timestamp,
-    }));
+    const data = validGifts.map((g) => {
+      const date = new Date(g.timestamp);
+      const pad = (num: number) => num.toString().padStart(2, '0');
+      const formattedTime = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+
+      return {
+        姓名: g.name,
+        金额: g.amount,
+        类型: g.type,
+        备注: g.remark || '',
+        时间: formattedTime,
+      };
+    });
 
     const ws = XLSX.utils.json_to_sheet(data);
     const wb = XLSX.utils.book_new();
@@ -228,7 +234,14 @@ export default function MainPage() {
             <div>
               <h1 className="text-2xl font-bold themed-header">{event.name}</h1>
               <p className="text-sm text-gray-600 mt-1">
-                {event.startDateTime} ~ {event.endDateTime}
+                {(() => {
+                  const formatEventTime = (dt: string) => {
+                    const date = new Date(dt);
+                    const pad = (num: number) => num.toString().padStart(2, '0');
+                    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+                  };
+                  return `${formatEventTime(event.startDateTime)} ~ ${formatEventTime(event.endDateTime)}`;
+                })()}
                 {event.recorder && ` | 记账人: ${event.recorder}`}
               </p>
             </div>
