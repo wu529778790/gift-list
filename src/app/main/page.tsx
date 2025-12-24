@@ -516,7 +516,7 @@ export default function MainPage() {
                 </div>
               </div>
 
-              {/* 礼簿内容 - 3行垂直布局：姓名、类型、大写金额 */}
+              {/* 礼簿内容 - 2行垂直布局：姓名、大写金额 */}
               <div className="gift-book-grid">
                 {/* 第1行：姓名（竖排） */}
                 <div className="gift-book-row">
@@ -539,24 +539,7 @@ export default function MainPage() {
                   })}
                 </div>
 
-                {/* 第2行：类型（竖排） */}
-                <div className="gift-book-row">
-                  {Array.from({ length: 12 }).map((_, idx) => {
-                    const gift = displayGifts[idx];
-                    const hasData = gift && gift.data && !gift.data.abolished;
-                    return (
-                      <div key={idx} className="book-cell type-cell">
-                        {hasData ? (
-                          gift.data!.type
-                        ) : (
-                          <span className="text-gray-300">+</span>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* 第3行：大写金额（竖排） */}
+                {/* 第2行：大写金额（竖排） */}
                 <div className="gift-book-row">
                   {Array.from({ length: 12 }).map((_, idx) => {
                     const gift = displayGifts[idx];

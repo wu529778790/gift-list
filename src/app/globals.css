@@ -316,7 +316,7 @@ input[type="checkbox"].themed-ring:checked {
 /* ==================== 礼簿表格样式 ==================== */
 .gift-book-grid {
   display: grid;
-  grid-template-rows: 1fr 0.8fr 1.2fr;
+  grid-template-rows: 1fr 1.6fr;
   border-top: 2px solid var(--primary-border-color);
   min-height: 0;
   background: rgba(255, 255, 255, 0.3);
@@ -341,11 +341,7 @@ input[type="checkbox"].themed-ring:checked {
 }
 
 .gift-book-row:nth-child(2) {
-  min-height: 30%;
-}
-
-.gift-book-row:nth-child(3) {
-  min-height: 30%;
+  min-height: 60%;
 }
 
 .book-cell {
@@ -385,7 +381,7 @@ input[type="checkbox"].themed-ring:checked {
 }
 
 .name-cell .name {
-  color: #333;
+  color: var(--primary-text-color, #333);
   padding: 15px 0;
   cursor: pointer;
   text-align: center;
@@ -410,7 +406,7 @@ input[type="checkbox"].themed-ring:checked {
 }
 
 .amount-cell {
-  color: #333;
+  color: var(--primary-text-color, #333);
   cursor: pointer;
   grid-template-columns: 1fr auto;
   column-gap: 12px;
@@ -423,7 +419,7 @@ input[type="checkbox"].themed-ring:checked {
   padding: 15px 0;
   overflow: hidden;
   font-size: 25px;
-  color: #333;
+  color: var(--primary-text-color, #333);
   font-family: 'KaiTi', '楷体', serif;
 }
 
@@ -605,7 +601,7 @@ input[type="checkbox"].themed-ring:checked {
   }
 
   .gift-book-grid {
-    grid-template-rows: 1fr 0.8fr 1.2fr;
+    grid-template-rows: 1fr 1.6fr;
   }
 
   .gift-book-row {
@@ -653,6 +649,10 @@ input[type="checkbox"].themed-ring:checked {
   .amount-chinese {
     font-size: 14px;
     padding: 6px 0;
+  }
+
+  .gift-book-grid {
+    grid-template-rows: 1fr 1.6fr;
   }
 
   .gift-book-row {

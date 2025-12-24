@@ -64,7 +64,7 @@ export default function GuestScreen() {
 
         {/* 礼簿框架 - 使用 gift-book-frame 样式 */}
         <div className="gift-book-frame max-w-6xl mx-auto">
-          {/* 数据行 - 3行垂直布局：姓名、类型、大写金额 */}
+          {/* 数据行 - 2行垂直布局：姓名、大写金额 */}
           <div className="gift-book-grid">
             {/* 第1行：姓名（竖排） */}
             <div className="gift-book-row">
@@ -90,23 +90,7 @@ export default function GuestScreen() {
               })}
             </div>
 
-            {/* 第2行：类型（竖排） */}
-            <div className="gift-book-row">
-              {Array.from({ length: 12 }).map((_, idx) => {
-                const gift = data.gifts[idx];
-                const isLatest = idx === data.gifts.length - 1;
-                return (
-                  <div
-                    key={idx}
-                    className={`book-cell type-cell ${isLatest ? 'bg-yellow-100 animate-pulse' : ''}`}
-                  >
-                    {gift ? gift.type : <span className="text-gray-200">+</span>}
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* 第3行：大写金额（竖排） */}
+            {/* 第2行：大写金额（竖排） */}
             <div className="gift-book-row">
               {Array.from({ length: 12 }).map((_, idx) => {
                 const gift = data.gifts[idx];
