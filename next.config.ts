@@ -23,6 +23,9 @@ const nextConfig: NextConfig = {
   // 生成 ETags
   generateEtags: true,
 
+  // 路由配置 - 支持 file:// 协议
+  trailingSlash: false,
+
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb'
