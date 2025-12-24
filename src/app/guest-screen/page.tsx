@@ -70,20 +70,18 @@ export default function GuestScreen() {
         {/* 标题 */}
         <div className="card themed-bg-light p-4 mb-4 text-center">
           <h1 className="text-3xl font-bold themed-header">{data.eventName}</h1>
-          <p className="text-sm text-gray-600 mt-1">实时礼金展示</p>
         </div>
 
-        {/* 最新礼金列表 */}
+        {/* 礼金列表 */}
         <div className="gift-book-frame">
           <div className="gift-book-columns">
             {Array.from({ length: 12 }).map((_, idx) => {
               const gift = data.gifts[idx];
-              const isLatest = idx === data.gifts.length - 1;
 
               return (
                 <div key={idx} className="gift-book-column" data-col-index={idx}>
                   {/* 姓名区域 */}
-                  <div className={`book-cell name-cell column-top ${isLatest ? 'bg-yellow-100' : ''}`}>
+                  <div className="book-cell name-cell column-top">
                     {gift ? (
                       <div className="name">
                         {gift.name.length === 2
@@ -96,7 +94,7 @@ export default function GuestScreen() {
                   </div>
 
                   {/* 金额区域 */}
-                  <div className={`book-cell amount-cell column-bottom ${isLatest ? 'bg-yellow-100' : ''}`}>
+                  <div className="book-cell amount-cell column-bottom">
                     {gift ? (
                       <div className="amount-chinese">
                         {Utils.amountToChinese(gift.amount)}
@@ -109,26 +107,6 @@ export default function GuestScreen() {
               );
             })}
           </div>
-        </div>
-
-        {/* 统计信息 */}
-        <div className="card p-4 mt-4 grid grid-cols-2 gap-4 text-center">
-          <div>
-            <div className="text-sm text-gray-600">最新记录</div>
-            <div className="text-2xl font-bold themed-text">
-              {data.gifts.length > 0 ? data.gifts[data.gifts.length - 1].name : "-"}
-            </div>
-          </div>
-          <div>
-            <div className="text-sm text-gray-600">最新金额</div>
-            <div className="text-2xl font-bold themed-text">
-              {data.gifts.length > 0 ? `¥${data.gifts[data.gifts.length - 1].amount.toFixed(2)}` : "-"}
-            </div>
-          </div>
-        </div>
-
-        <div className="text-center text-xs text-gray-400 mt-4">
-          自动同步中 | 最后更新: {new Date().toLocaleTimeString()}
         </div>
       </div>
     </div>
