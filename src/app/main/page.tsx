@@ -545,28 +545,19 @@ export default function MainPage() {
                 </div>
               </div>
 
-              {/* 礼簿内容 - 2行垂直布局：姓名、大写金额 */}
-              <div
-                className="gift-book-grid"
-                onMouseLeave={() => {
-                  const grid = document.querySelector('.gift-book-grid');
-                  if (grid) grid.removeAttribute('data-hover-col');
-                }}
-              >
-                {/* 第1行：姓名（竖排） */}
-                <div className="gift-book-row">
-                  {Array.from({ length: 12 }).map((_, idx) => {
-                    const gift = displayGifts[idx];
-                    const hasData = gift && gift.data && !gift.data.abolished;
-                    return (
-                      <div
-                        key={idx}
-                        className="book-cell name-cell"
-                        onMouseEnter={() => {
-                          const grid = document.querySelector('.gift-book-grid');
-                          if (grid) grid.setAttribute('data-hover-col', idx.toString());
-                        }}
-                      >
+              {/* 礼簿内容 - 每列独立卡片布局 */}
+              <div className="gift-book-columns">
+                {Array.from({ length: 12 }).map((_, idx) => {
+                  const gift = displayGifts[idx];
+                  const hasData = gift && gift.data && !gift.data.abolished;
+                  return (
+                    <div
+                      key={idx}
+                      className="gift-book-column"
+                      data-col-index={idx}
+                    >
+                      {/* 姓名区域 */}
+                      <div className="book-cell name-cell column-top">
                         {hasData ? (
                           <div className="name">
                             {gift.data!.name.length === 2
@@ -577,24 +568,9 @@ export default function MainPage() {
                           <span className="text-gray-300">+</span>
                         )}
                       </div>
-                    );
-                  })}
-                </div>
 
-                {/* 第2行：大写金额（竖排） */}
-                <div className="gift-book-row">
-                  {Array.from({ length: 12 }).map((_, idx) => {
-                    const gift = displayGifts[idx];
-                    const hasData = gift && gift.data && !gift.data.abolished;
-                    return (
-                      <div
-                        key={idx}
-                        className="book-cell amount-cell"
-                        onMouseEnter={() => {
-                          const grid = document.querySelector('.gift-book-grid');
-                          if (grid) grid.setAttribute('data-hover-col', idx.toString());
-                        }}
-                      >
+                      {/* 金额区域 */}
+                      <div className="book-cell amount-cell column-bottom">
                         {hasData ? (
                           <div className="amount-chinese">
                             {Utils.amountToChinese(gift.data!.amount)}
@@ -603,9 +579,9 @@ export default function MainPage() {
                           <span className="text-gray-300">+</span>
                         )}
                       </div>
-                    );
-                  })}
-                </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

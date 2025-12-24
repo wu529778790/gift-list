@@ -370,40 +370,48 @@ input[type="checkbox"].themed-ring:checked {
   }
 }
 
-/* ==================== 礼簿表格样式 ==================== */
-.gift-book-grid {
+/* ==================== 礼簿表格样式 - 方案A：每列独立卡片 ==================== */
+.gift-book-columns {
   display: grid;
-  grid-template-rows: 1fr 1.6fr;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2px;
   border-top: 2px solid var(--primary-border-color);
   min-height: 0;
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--primary-border-color);
   border-radius: 8px;
-  overflow: hidden;
+  overflow: visible;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+  padding: 4px;
 }
 
-.gift-book-row {
-  width: 100%;
+.gift-book-column {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: 1fr 1.6fr;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 100%);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  border: 1px solid var(--primary-border-color);
+}
+
+/* 列 hover 效果 - 纯CSS实现，无需JS */
+.gift-book-column:hover {
+  background: var(--link-hover-bg);
+  transform: translateY(-4px) scale(1.03);
+  z-index: 10;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: var(--primary-color);
+}
+
+/* 列内部的分隔线 */
+.gift-book-column .column-top {
   border-bottom: 2px solid var(--primary-border-color);
 }
 
-.gift-book-row:last-child {
-  border-bottom: none;
-}
-
-.gift-book-row:nth-child(1) {
-  min-height: 40%;
-}
-
-.gift-book-row:nth-child(2) {
-  min-height: 60%;
-}
-
+/* 单元格基础样式调整（适用于新布局） */
 .book-cell {
-  border-right: 2px solid var(--primary-border-color);
-  border-bottom: none;
   display: grid;
   place-items: center;
   writing-mode: vertical-lr;
@@ -419,42 +427,12 @@ input[type="checkbox"].themed-ring:checked {
   position: relative;
   line-height: 1.2;
   transition: all 0.3s ease;
-  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 100%);
+  border: none !important;
+  border-radius: 0;
+  background: transparent;
 }
 
-.book-cell:first-child {
-  border-left: 2px solid var(--primary-border-color);
-}
-
-.book-cell:last-child {
-  border-right: none;
-}
-
-/* 单个格子的 hover 效果 - 移除 */
-.book-cell:hover {
-  /* 移除单个格子的 hover 效果 */
-}
-
-/* 列 hover 效果 - 使用 data-hover-col 属性 */
-.gift-book-grid[data-hover-col="0"] .book-cell:nth-child(1),
-.gift-book-grid[data-hover-col="1"] .book-cell:nth-child(2),
-.gift-book-grid[data-hover-col="2"] .book-cell:nth-child(3),
-.gift-book-grid[data-hover-col="3"] .book-cell:nth-child(4),
-.gift-book-grid[data-hover-col="4"] .book-cell:nth-child(5),
-.gift-book-grid[data-hover-col="5"] .book-cell:nth-child(6),
-.gift-book-grid[data-hover-col="6"] .book-cell:nth-child(7),
-.gift-book-grid[data-hover-col="7"] .book-cell:nth-child(8),
-.gift-book-grid[data-hover-col="8"] .book-cell:nth-child(9),
-.gift-book-grid[data-hover-col="9"] .book-cell:nth-child(10),
-.gift-book-grid[data-hover-col="10"] .book-cell:nth-child(11),
-.gift-book-grid[data-hover-col="11"] .book-cell:nth-child(12) {
-  background-color: var(--link-hover-bg);
-  transform: scale(1.02);
-  z-index: 1;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
+/* 姓名单元格特定样式 */
 .name-cell .name {
   color: var(--primary-text-color, #333);
   padding: 15px 0;
@@ -472,14 +450,7 @@ input[type="checkbox"].themed-ring:checked {
   transform: scale(1.05);
 }
 
-.type-cell {
-  color: var(--primary-color);
-  font-size: 22px;
-  padding: 10px 4px;
-  font-family: 'Source Han Serif CN Heavy', serif;
-  font-weight: bold;
-}
-
+/* 金额单元格特定样式 */
 .amount-cell {
   color: var(--primary-text-color, #333);
   cursor: pointer;
@@ -488,14 +459,12 @@ input[type="checkbox"].themed-ring:checked {
   justify-content: center;
 }
 
-.amount-chinese {
-  letter-spacing: 1.5px;
-  text-align: center;
-  padding: 15px 0;
-  overflow: hidden;
-  font-size: 25px;
-  color: var(--primary-text-color, #333);
-  font-family: 'KaiTi', '楷体', serif;
+.type-cell {
+  color: var(--primary-color);
+  font-size: 22px;
+  padding: 10px 4px;
+  font-family: 'Source Han Serif CN Heavy', serif;
+  font-weight: bold;
 }
 
 .amount-number-cell {
@@ -649,6 +618,11 @@ input[type="checkbox"].themed-ring:checked {
     min-height: 350px;
   }
 
+  /* 移动端改为8列布局 */
+  .gift-book-columns {
+    grid-template-columns: repeat(8, 1fr);
+  }
+
   .book-cell {
     font-size: 13px;
     letter-spacing: 4px;
@@ -675,14 +649,6 @@ input[type="checkbox"].themed-ring:checked {
     letter-spacing: 1px;
   }
 
-  .gift-book-grid {
-    grid-template-rows: 1fr 1.6fr;
-  }
-
-  .gift-book-row {
-    grid-template-columns: repeat(8, minmax(0, 1fr)); /* 减少列数 for mobile */
-  }
-
   /* Mobile-specific layout adjustments */
   .main-content {
     padding: 0.5rem;
@@ -703,6 +669,13 @@ input[type="checkbox"].themed-ring:checked {
   .gift-book-frame {
     padding: 8px;
     min-height: 300px;
+  }
+
+  /* 小屏改为6列布局 */
+  .gift-book-columns {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1px;
+    padding: 2px;
   }
 
   .book-cell {
@@ -726,14 +699,6 @@ input[type="checkbox"].themed-ring:checked {
     padding: 6px 0;
   }
 
-  .gift-book-grid {
-    grid-template-rows: 1fr 1.6fr;
-  }
-
-  .gift-book-row {
-    grid-template-columns: repeat(6, minmax(0, 1fr)); /* Further reduce columns */
-  }
-
   /* Mobile form adjustments */
   .form-group {
     margin-bottom: 1rem;
@@ -749,6 +714,13 @@ input[type="checkbox"].themed-ring:checked {
   .gift-book-frame {
     padding: 6px;
     min-height: 250px;
+  }
+
+  /* 超小屏改为4列布局 */
+  .gift-book-columns {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    padding: 1px;
   }
 
   .book-cell {
@@ -770,10 +742,6 @@ input[type="checkbox"].themed-ring:checked {
   .amount-chinese {
     font-size: 12px;
     padding: 5px 0;
-  }
-
-  .gift-book-row {
-    grid-template-columns: repeat(4, minmax(0, 1fr)); /* Minimal columns for very small screens */
   }
 
   /* Compact mobile layout */
