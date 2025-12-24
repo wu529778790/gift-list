@@ -5,19 +5,16 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-# 设置权限
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# 只允许一个并发运行
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
-  # 构建任务
   build:
     runs-on: ubuntu-latest
     steps:
@@ -38,11 +35,23 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: |
-          pnpm next export
+      - name: Build and Export
+        run: pnpm next build
         env:
           NEXT_PUBLIC_IS_EXPORT: 'true'
+
+      - name: Verify output
+        run: |
+          ls -la out/
+          echo "=== Checking for index.html ==="
+          if [ -f out/index.html ]; then
+            echo "✓ index.html exists"
+          else
+            echo "✗ index.html missing"
+            echo "=== Listing .next directory ==="
+            ls -la .next/
+            exit 1
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -52,7 +61,6 @@ jobs:
         with:
           path: ./out
 
-  # 部署任务
   deploy:
     environment:
       name: github-pages

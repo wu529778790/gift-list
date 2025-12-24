@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   } : undefined,
 
+  // 配置输出目录
+  distDir: isExport ? 'out' : '.next',
+
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb'
