@@ -101,6 +101,35 @@ export default function MainPage() {
     });
 
     setGifts(decrypted);
+
+    // 数据加载完成后立即同步到副屏
+    // 使用 setTimeout 确保 setGifts 完成后再同步
+    setTimeout(() => {
+      // 从 localStorage 重新读取完整数据进行同步
+      const allRecords = JSON.parse(
+        localStorage.getItem(`giftlist_gifts_${eventId}`) || "[]"
+      );
+      const allDecrypted = allRecords.map((r: GiftRecord) => {
+        const data = CryptoService.decrypt<GiftData>(
+          r.encryptedData,
+          decryptPassword
+        );
+        return data;
+      }).filter((data: GiftData | null) => data !== null && !data.abolished);
+
+      // 构建同步数据
+      const session = sessionStorage.getItem("currentEvent");
+      if (session) {
+        const { event } = JSON.parse(session);
+        const syncData = {
+          eventName: event?.name,
+          theme: event?.theme === "festive" ? "theme-festive" : "theme-solemn",
+          gifts: allDecrypted.slice(-12),
+        };
+        localStorage.setItem("guest_screen_data", JSON.stringify(syncData));
+        console.log("[Main] Initial data synced to guest screen:", allDecrypted.length, "gifts");
+      }
+    }, 100);
   };
 
   const handleAmountChange = (value: string) => {
@@ -346,7 +375,7 @@ export default function MainPage() {
             <div className="flex gap-2 flex-wrap no-print">
               <button
                 onClick={handleGoHome}
-                className="px-3 py-1 bg-gray-500 text-white rounded text-sm hover:bg-gray-600 hover-lift">
+                className="px-3 py-1 themed-button-danger text-sm">
                 返回首页
               </button>
               <button
@@ -613,7 +642,7 @@ export default function MainPage() {
                       modal.onCancel?.();
                       setModal({ ...modal, isOpen: false });
                     }}
-                    className="px-4 py-2 rounded-lg font-semibold bg-gray-500 hover:bg-gray-600 text-white transition-all transform hover:scale-105 active:scale-95">
+                    className="px-4 py-2 rounded-lg font-semibold themed-button-danger transition-all transform hover:scale-105 active:scale-95">
                     取消
                   </button>
                 )}
@@ -629,8 +658,8 @@ export default function MainPage() {
                   }}
                   className={`px-4 py-2 rounded-lg font-semibold transition-all transform hover:scale-105 active:scale-95 ${
                     modal.type === "confirm"
-                      ? "bg-blue-500 hover:bg-blue-600 text-white"
-                      : "bg-blue-500 hover:bg-blue-600 text-white"
+                      ? "themed-button-primary"
+                      : "themed-button-primary"
                   }`}>
                   {modal.type === "confirm" ? "确定" : "确定"}
                 </button>

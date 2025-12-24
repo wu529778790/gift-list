@@ -185,7 +185,7 @@ export default function Home() {
                   sessionStorage.removeItem('currentEvent');
                   router.replace('/');
                 }}
-                className="w-full bg-gray-500 text-white p-2 rounded text-sm hover:bg-gray-600 hover-lift"
+                className="w-full themed-button-danger p-2 rounded text-sm"
               >
                 🔄 返回首页重新选择
               </button>
@@ -319,7 +319,7 @@ export default function Home() {
                       router.replace('/');
                     }
                   }}
-                  className="flex-1 text-sm bg-red-500 text-white p-2 rounded hover:bg-red-600 hover-lift"
+                  className="flex-1 text-sm themed-button-danger p-2 rounded"
                 >
                   🗑️ 清除事件
                 </button>

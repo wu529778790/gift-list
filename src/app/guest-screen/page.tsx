@@ -12,12 +12,25 @@ export default function GuestScreen() {
   } | null>(null);
 
   useEffect(() => {
-    // 轮询读取 localStorage
-    const interval = setInterval(() => {
+    // 立即尝试读取一次数据（不等待轮询）
+    const tryReadData = () => {
       const stored = localStorage.getItem('guest_screen_data');
       if (stored) {
         setData(JSON.parse(stored));
+        return true;
       }
+      return false;
+    };
+
+    // 首次立即尝试
+    if (!tryReadData()) {
+      // 如果没有数据，增加 500ms 后的重试
+      setTimeout(tryReadData, 500);
+    }
+
+    // 轮询读取 localStorage（作为后备机制）
+    const interval = setInterval(() => {
+      tryReadData();
     }, 1000);
 
     // 监听 postMessage

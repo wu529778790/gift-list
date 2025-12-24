@@ -60,6 +60,63 @@
 }
 
 /* ==================== 主题组件样式 ==================== */
+
+/* 危险操作按钮（返回首页、清除数据等）- 与主题关联 */
+.themed-button-danger {
+  @apply font-bold transition-all duration-300 rounded-lg;
+  background-color: #dc3545; /* 喜事主题红色 */
+  color: white;
+  box-shadow: 0 4px 6px rgba(220, 53, 69, 0.2);
+  border: none;
+}
+
+.theme-solemn .themed-button-danger {
+  background-color: #6c757d; /* 丧事主题灰色 */
+  box-shadow: 0 4px 6px rgba(108, 117, 125, 0.2);
+}
+
+.themed-button-danger:hover:not(:disabled) {
+  background-color: #c9302c; /* 喜事主题深红色 */
+  @apply shadow-lg transform -translate-y-0.5;
+  box-shadow: 0 6px 12px rgba(220, 53, 69, 0.3);
+}
+
+.theme-solemn .themed-button-danger:hover:not(:disabled) {
+  background-color: #5a6268; /* 丧事主题深灰色 */
+  box-shadow: 0 6px 12px rgba(108, 117, 125, 0.3);
+}
+
+.themed-button-danger:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* 次要危险按钮（带边框） */
+.themed-button-danger-secondary {
+  @apply font-medium transition-all duration-300 rounded-lg;
+  border: 2px solid #dc3545;
+  color: #dc3545;
+  background-color: transparent;
+  box-shadow: 0 4px 6px rgba(220, 53, 69, 0.1);
+}
+
+.theme-solemn .themed-button-danger-secondary {
+  border-color: #6c757d;
+  color: #6c757d;
+  box-shadow: 0 4px 6px rgba(108, 117, 125, 0.1);
+}
+
+.themed-button-danger-secondary:hover {
+  background-color: #f8d7da;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(220, 53, 69, 0.15);
+}
+
+.theme-solemn .themed-button-danger-secondary:hover {
+  background-color: #e9ecef;
+  box-shadow: 0 6px 12px rgba(108, 117, 125, 0.15);
+}
+
+/* ==================== 主题组件样式 ==================== */
 .themed-header {
   color: var(--header-text-color);
   text-shadow: 0 1px 2px var(--shadow-color);

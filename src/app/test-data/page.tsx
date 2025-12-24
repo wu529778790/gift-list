@@ -262,7 +262,7 @@ export default function TestDataPage() {
 
             <button
               onClick={clearAllData}
-              className="w-full bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 hover-lift"
+              className="w-full themed-button-danger p-3 rounded-lg"
             >
               🗑️ 清除所有数据
             </button>
@@ -270,7 +270,7 @@ export default function TestDataPage() {
 
           <button
             onClick={() => router.push('/')}
-            className="w-full text-gray-600 hover:text-gray-900 underline p-2"
+            className="w-full themed-button-danger p-2 rounded-lg"
           >
             返回首页
           </button>

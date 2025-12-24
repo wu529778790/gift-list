@@ -7,7 +7,7 @@ export default function NotFound() {
       <p className="text-gray-600 mb-6">您访问的页面不存在</p>
       <Link
         href="/"
-        className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        className="px-6 py-2 themed-button-danger rounded-lg"
       >
         返回首页
       </Link>

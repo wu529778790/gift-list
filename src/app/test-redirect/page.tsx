@@ -70,7 +70,7 @@ export default function TestRedirect() {
           <button onClick={checkStorage} className="themed-button-primary p-3 rounded-lg font-bold">
             检查存储状态
           </button>
-          <button onClick={clearAll} className="themed-button-secondary border p-3 rounded-lg">
+          <button onClick={clearAll} className="themed-button-danger p-3 rounded-lg">
             清除所有数据
           </button>
           <button onClick={goHome} className="themed-button-primary p-3 rounded-lg font-bold">
