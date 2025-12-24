@@ -255,20 +255,13 @@ export default function MainPage() {
           </div>
         </div>
 
-        {/* 全局统计汇总 */}
-        <div className="grid grid-cols-3 gap-4">
-          <div className="card p-3 text-center">
-            <div className="text-xs text-gray-500">总金额</div>
-            <div className="text-xl font-bold themed-text">{Utils.formatCurrency(totalAmount)}</div>
+        {/* 简洁统计栏 */}
+        <div className="card p-2 flex justify-between items-center text-sm">
+          <div className="flex items-center gap-4">
+            <span className="font-bold text-gray-600">总金额: <span className="themed-text ml-1">{Utils.formatCurrency(totalAmount)}</span></span>
+            <span className="font-bold text-gray-600">总人数: <span className="themed-text ml-1">{totalGivers}</span></span>
           </div>
-          <div className="card p-3 text-center">
-            <div className="text-xs text-gray-500">总人数</div>
-            <div className="text-xl font-bold themed-text">{totalGivers}</div>
-          </div>
-          <div className="card p-3 text-center">
-            <div className="text-xs text-gray-500">当前页</div>
-            <div className="text-xl font-bold themed-text">{currentPage}/{totalPages}</div>
-          </div>
+          <div className="font-bold text-gray-600">第 {currentPage}/{totalPages} 页</div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -358,19 +351,15 @@ export default function MainPage() {
                 </button>
               </form>
 
-              {/* 快捷统计卡片 */}
-              <div className="mt-6 pt-6 border-t themed-border grid grid-cols-3 gap-2">
-                <div className="text-center p-2 rounded bg-gray-50 dark:bg-gray-800/50 border themed-border">
-                  <div className="text-xs text-gray-500">本页小计</div>
-                  <div className="text-sm font-bold themed-text truncate">{Utils.formatCurrency(pageSubtotal)}</div>
+              {/* 快捷统计 */}
+              <div className="mt-4 pt-4 border-t themed-border grid grid-cols-2 gap-2 text-xs">
+                <div className="flex justify-between p-2 rounded bg-gray-50 dark:bg-gray-800/30 border themed-border">
+                  <span className="text-gray-500">总金额</span>
+                  <span className="font-bold themed-text">{Utils.formatCurrency(totalAmount)}</span>
                 </div>
-                <div className="text-center p-2 rounded bg-gray-50 dark:bg-gray-800/50 border themed-border">
-                  <div className="text-xs text-gray-500">总金额</div>
-                  <div className="text-sm font-bold themed-text truncate">{Utils.formatCurrency(totalAmount)}</div>
-                </div>
-                <div className="text-center p-2 rounded bg-gray-50 dark:bg-gray-800/50 border themed-border">
-                  <div className="text-xs text-gray-500">总人数</div>
-                  <div className="text-sm font-bold themed-text">{totalGivers}</div>
+                <div className="flex justify-between p-2 rounded bg-gray-50 dark:bg-gray-800/30 border themed-border">
+                  <span className="text-gray-500">总人数</span>
+                  <span className="font-bold themed-text">{totalGivers}</span>
                 </div>
               </div>
             </div>
@@ -379,52 +368,26 @@ export default function MainPage() {
           {/* 右侧：礼簿展示 */}
           <div className="lg:col-span-2">
             <div className="gift-book-frame print-area">
-              {/* 页码导航 + 简要统计 */}
-              <div className="flex justify-between items-center mb-4 pb-4 border-b themed-border no-print">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="font-bold text-gray-600">本页:</span>
-                    <span className="font-bold themed-text">{Utils.formatCurrency(pageSubtotal)}</span>
-                    <span className="text-gray-400">|</span>
-                    <span className="font-bold text-gray-600">总计:</span>
-                    <span className="font-bold themed-text">{Utils.formatCurrency(totalAmount)}</span>
-                    <span className="text-gray-400">|</span>
-                    <span className="font-bold text-gray-600">人数:</span>
-                    <span className="font-bold themed-text">{totalGivers}</span>
-                  </div>
+              {/* 页码导航 */}
+              <div className="flex justify-between items-center mb-3 pb-3 border-b themed-border no-print text-sm">
+                <div className="flex items-center gap-3 font-bold themed-text">
+                  <span>本页: {Utils.formatCurrency(pageSubtotal)}</span>
+                  <span className="text-gray-400">|</span>
+                  <span>人数: {displayGifts.filter(g => g.data && !g.data.abolished).length}</span>
                 </div>
-                <div className="flex items-center space-x-2 text-lg">
+                <div className="flex items-center gap-1">
                   <button
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
-                    className="themed-button-primary p-2 disabled:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center hover-lift"
+                    className="themed-button-primary w-7 h-7 rounded disabled:opacity-30 disabled:cursor-not-allowed hover:bg-opacity-90"
                   >
                     ←
                   </button>
-                  <div className="font-bold flex items-center">
-                    第
-                    <input
-                      type="number"
-                      value={currentPage}
-                      onChange={(e) =>
-                        setCurrentPage(
-                          Math.max(
-                            1,
-                            Math.min(
-                              totalPages,
-                              parseInt(e.target.value) || 1
-                            )
-                          )
-                        )
-                      }
-                      className="w-10 text-center border themed-ring text-xs p-1 h-6"
-                    />
-                    / {totalPages} 页
-                  </div>
+                  <span className="font-bold text-gray-700 px-1">{currentPage}/{totalPages}</span>
                   <button
                     onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                     disabled={currentPage === totalPages}
-                    className="themed-button-primary p-2 disabled:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center hover-lift"
+                    className="themed-button-primary w-7 h-7 rounded disabled:opacity-30 disabled:cursor-not-allowed hover:bg-opacity-90"
                   >
                     →
                   </button>
