@@ -89,7 +89,7 @@ export default function GuestScreen() {
                   data-col-index={idx}
                 >
                   {/* 姓名区域 */}
-                  <div className={`book-cell name-cell column-top ${isLatest ? 'bg-yellow-100 animate-pulse' : ''}`}>
+                  <div className={`book-cell name-cell column-top ${isLatest ? 'bg-yellow-100' : ''}`}>
                     {gift ? (
                       <div className="name">
                         {gift.name.length === 2
@@ -102,7 +102,7 @@ export default function GuestScreen() {
                   </div>
 
                   {/* 金额区域 */}
-                  <div className={`book-cell amount-cell column-bottom ${isLatest ? 'bg-yellow-100 animate-pulse' : ''}`}>
+                  <div className={`book-cell amount-cell column-bottom ${isLatest ? 'bg-yellow-100' : ''}`}>
                     {gift ? (
                       <div className="amount-chinese">
                         {Utils.amountToChinese(gift.amount)}

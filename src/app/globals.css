@@ -454,11 +454,6 @@ input[type="checkbox"].themed-ring:checked {
   background: transparent;
 }
 
-/* 金额单元格从顶部开始排列 */
-.amount-cell {
-  align-items: start;
-}
-
 /* 姓名单元格特定样式 */
 .name-cell .name {
   color: var(--primary-text-color, #333);
@@ -484,6 +479,10 @@ input[type="checkbox"].themed-ring:checked {
   grid-template-columns: 1fr auto;
   column-gap: 12px;
   justify-content: center;
+}
+
+.amount-cell .amount-chinese {
+  justify-self: start;
 }
 
 .type-cell {

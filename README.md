@@ -2,9 +2,12 @@
 
 基于 **Next.js 16** 的现代化电子礼簿系统，支持本地存储和 GitHub 云端同步。
 
+![20251224190930](https://gcore.jsdelivr.net/gh/wu529778790/img.shenzjd.com/blog/20251224190930.png)
+
 ## 🚀 一键部署
 
 ### GitHub Pages (免费)
+
 [![Deploy to GitHub Pages](https://github.com/wu529778790/libu.shenzjd.com/actions/workflows/deploy-to-github-pages.yml/badge.svg)](https://github.com/wu529778790/libu.shenzjd.com/actions/workflows/deploy-to-github-pages.yml)
 
 1. Fork 仓库
@@ -12,6 +15,7 @@
 3. 推送代码，自动部署
 
 ### Vercel (推荐)
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
 
 点击按钮 → 导入仓库 → 自动部署
@@ -19,6 +23,7 @@
 ## ⚡ 快速体验
 
 首次访问自动创建演示数据：
+
 - 事件: 张三李四婚礼
 - 密码: **123456** (已预填)
 - 礼金: 6条数据（888, 666, 1000, 520, 1888, 666）
