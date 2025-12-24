@@ -170,7 +170,6 @@ jobs:
             3. 按照 `README-部署说明.md` 操作
 
             ### 📝 构建信息
-            - **构建时间**: ${{ github.event.head_commit.timestamp || now() }}
             - **Commit**: ${{ github.sha }}
             - **构建者**: ${{ github.actor }}
             - **分支**: ${{ github.ref_name }}
