@@ -219,30 +219,23 @@ export default function MainPage() {
       ) as HTMLInputElement;
       nameInput?.focus();
 
-      // 同步副屏
-      syncGuestScreen(giftData);
+      // 同步副屏（使用当前 gifts + 新数据）
+      const updatedGifts = [...gifts, { record, data: giftData }];
+      const allGifts = updatedGifts
+        .filter((g) => g.data && !g.data.abolished)
+        .map((g) => g.data!);
+      const data = {
+        eventName: event?.name,
+        theme: event?.theme === "festive" ? "theme-festive" : "theme-solemn",
+        gifts: allGifts.slice(-12),
+      };
+      localStorage.setItem("guest_screen_data", JSON.stringify(data));
     } catch (err) {
       console.error(err);
       alert("录入失败: " + err);
     } finally {
       setLoading(false);
     }
-  };
-
-  const syncGuestScreen = (newGift?: GiftData) => {
-    const allGifts = gifts
-      .filter((g) => g.data && !g.data.abolished)
-      .map((g) => g.data!);
-
-    if (newGift) allGifts.push(newGift);
-
-    const data = {
-      eventName: event?.name,
-      theme: event?.theme === "festive" ? "theme-festive" : "theme-solemn",
-      gifts: allGifts.slice(-12),
-    };
-
-    localStorage.setItem("guest_screen_data", JSON.stringify(data));
   };
 
   // 分页
@@ -407,8 +400,16 @@ export default function MainPage() {
         existing.splice(detailModal.index, 1);
         localStorage.setItem(key, JSON.stringify(existing));
 
-        // 同步到副屏
-        syncGuestScreen();
+        // 同步到副屏（使用新数组）
+        const allGifts = newGifts
+          .filter((g) => g.data && !g.data.abolished)
+          .map((g) => g.data!);
+        const syncData = {
+          eventName: event.name,
+          theme: event.theme === "festive" ? "theme-festive" : "theme-solemn",
+          gifts: allGifts.slice(-12),
+        };
+        localStorage.setItem("guest_screen_data", JSON.stringify(syncData));
 
         // 关闭弹窗
         closeDetailModal();
@@ -459,8 +460,16 @@ export default function MainPage() {
     };
     localStorage.setItem(key, JSON.stringify(existing));
 
-    // 同步到副屏
-    syncGuestScreen(updatedGift);
+    // 同步到副屏（使用更新后的数组）
+    const allGifts = newGifts
+      .filter((g) => g.data && !g.data.abolished)
+      .map((g) => g.data!);
+    const syncData = {
+      eventName: event.name,
+      theme: event.theme === "festive" ? "theme-festive" : "theme-solemn",
+      gifts: allGifts.slice(-12),
+    };
+    localStorage.setItem("guest_screen_data", JSON.stringify(syncData));
 
     // 关闭弹窗
     closeDetailModal();
