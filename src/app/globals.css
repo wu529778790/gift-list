@@ -1053,7 +1053,6 @@ input[type="checkbox"].themed-ring:checked {
   );
   border-radius: 6px;
   overflow: hidden;
-  transition: all 0.3s ease;
   position: relative;
   z-index: 1;
   border: 1px solid var(--primary-border-color);
@@ -1088,7 +1087,6 @@ input[type="checkbox"].themed-ring:checked {
   min-width: 0;
   position: relative;
   line-height: 1.2;
-  transition: all 0.3s ease;
   border: none !important;
   border-radius: 0;
   background: transparent;

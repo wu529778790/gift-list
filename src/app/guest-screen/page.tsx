@@ -95,8 +95,13 @@ export default function GuestScreen() {
       lastNewDataTimeRef.current = currentTime;
       const latestPage = pagedData.length - 1;
 
-      // 立即翻到最新页
-      flipToPage(latestPage);
+      // 只有当不是首次加载时才翻页（prevGiftCountRef.current > 0）
+      if (prevGiftCountRef.current > 0) {
+        flipToPage(latestPage);
+      } else {
+        // 首次加载，直接设置到最新页，不翻页动画
+        setCurrentPage(latestPage);
+      }
 
       // 启动10秒停留计时器
       stayTimerRef.current = setTimeout(() => {
