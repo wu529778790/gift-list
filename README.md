@@ -4,6 +4,11 @@
 
 **✨ 核心特性**：支持直接 HTML 打开（file:// 协议），无需服务器，双击即可使用！
 
+![20251224190930](https://gcore.jsdelivr.net/gh/wu529778790/img.shenzjd.com/blog/20251224190930.png)
+![20251224195304](https://gcore.jsdelivr.net/gh/wu529778790/img.shenzjd.com/blog/20251224195304.png)
+![20251224195354](https://gcore.jsdelivr.net/gh/wu529778790/img.shenzjd.com/blog/20251224195354.png)
+![20251224195416](https://gcore.jsdelivr.net/gh/wu529778790/img.shenzjd.com/blog/20251224195416.png)
+
 ## 🚀 快速开始
 
 ### 方式1：直接打开（推荐，无需服务器）
@@ -116,6 +121,7 @@ src/
 | 优势 | SSR/SSG | 单文件、更快、更简单 |
 
 **主要优势**：
+
 - ✅ 可直接双击 HTML 使用
 - ✅ 更快的构建速度
 - ✅ 更小的包体积
@@ -138,6 +144,7 @@ git push origin v1.0.0
 ## 🎯 快速体验
 
 首次访问自动创建演示数据：
+
 - **事件**: 张三李四婚礼
 - **密码**: `123456` (已预填)
 - **数据**: 6条礼金记录
