@@ -1,13 +1,11 @@
 # 🎁 电子礼簿系统
 
-![20251224190930](https://gcore.jsdelivr.net/gh/wu529778790/img.shenzjd.com/blog/20251224190930.png)
-![20251224195304](https://gcore.jsdelivr.net/gh/wu529778790/img.shenzjd.com/blog/20251224195304.png)
-![20251224195354](https://gcore.jsdelivr.net/gh/wu529778790/img.shenzjd.com/blog/20251224195354.png)
-![20251224195416](https://gcore.jsdelivr.net/gh/wu529778790/img.shenzjd.com/blog/20251224195416.png)
-
 **✨ 双击即用，无需安装，无需服务器！**
 
 一个现代化的电子礼簿系统，专为婚礼、寿宴等场合设计。所有数据加密存储在本地，安全私密。
+
+![20251226005427](https://gcore.jsdelivr.net/gh/wu529778790/image/blog/20251226005427.png)
+![20251226005542](https://gcore.jsdelivr.net/gh/wu529778790/image/blog/20251226005542.png)
 
 ## 🚀 怎么用？
 
