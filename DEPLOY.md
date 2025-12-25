@@ -5,12 +5,8 @@
 ### 方式1: 下载 Release（推荐）
 ```bash
 # 1. 访问 GitHub Releases 页面
-# 2. 下载 release-package.tar.gz
-# 3. 解压
-tar -xzf release-package.tar.gz
-cd release-package
-
-# 4. 双击 index.html 即可使用！
+# 2. 下载 index.html
+# 3. 双击即可使用！
 ```
 
 ### 方式2: 自行构建
@@ -37,20 +33,17 @@ pnpm build
 
 ### 本地服务器
 ```bash
-cd dist
 npx serve .
 # 访问 http://localhost:3000
 ```
 
 ### 部署到服务器
-将 `dist/index.html` 上传到 Web 服务器即可。
+上传 `index.html` 到 Web 服务器即可。
 
 ### 部署到 GitHub Pages
 ```bash
-cd dist
-git init
-git add .
-git commit -m "Deploy"
+# 将 index.html 推送到 gh-pages 分支
+git init && git add index.html && git commit -m "Deploy"
 git remote add origin <your-repo>
 git push -f origin main:gh-pages
 ```

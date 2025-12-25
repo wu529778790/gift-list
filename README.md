@@ -14,12 +14,8 @@
 ### 方式1：直接打开（推荐，无需服务器）
 
 ```bash
-# 1. 下载 release-package.tar.gz
-# 2. 解压
-tar -xzf release-package.tar.gz
-cd release-package
-
-# 3. 双击 index.html 或在浏览器中按 Ctrl+O 选择文件
+# 1. 下载 Release 中的 index.html
+# 2. 双击即可使用！
 # ✅ 支持 file:// 协议，无需任何服务器！
 ```
 

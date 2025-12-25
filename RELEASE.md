@@ -1,6 +1,6 @@
 # 📦 发布指南
 
-本项目使用 GitHub Actions 自动发布，支持一键打包并发布 Release。
+本项目使用 GitHub Actions 自动发布，直接发布单个 HTML 文件。
 
 ## 🚀 快速发布
 
@@ -13,9 +13,8 @@ git push origin v1.0.0
 
 # 2. GitHub Actions 自动完成：
 #    - 构建项目 (pnpm build)
-#    - 打包 dist 目录
 #    - 创建 Release
-#    - 上传 release-package.tar.gz
+#    - 上传 index.html + VERSION.txt
 ```
 
 ### 方式2: 手动触发
@@ -30,38 +29,33 @@ git push origin v1.0.0
 Release 包含：
 
 ```
-release-package.tar.gz
-├── index.html          # 单文件应用（298KB，可直接打开）
-└── README.md           # 使用说明
+├── index.html          # 单文件应用（298KB）
+└── VERSION.txt         # 版本信息
 ```
 
-**✨ 特性**：所有代码、样式、资源都内联到单个 HTML 文件！
+**✨ 特性**：无需打包，直接上传单个 HTML 文件！
 
 ## 🎯 使用方式
 
 ### 方式1: 直接打开（推荐）
 
 ```bash
-tar -xzf release-package.tar.gz
-cd release-package
-# 双击 index.html 或 Ctrl+O 在浏览器中打开
+# 下载 index.html
+# 双击即可使用！
 ```
 
 ### 方式2: 部署到服务器
 
 ```bash
-# 解压后上传 dist 目录到服务器
-tar -xzf release-package.tar.gz
-cd release-package
-# 上传所有文件到 Web 服务器
+# 上传 index.html 到 Web 服务器
+scp index.html user@your-server:/var/www/html/
 ```
 
 ### 方式3: GitHub Pages
 
 ```bash
-# 将 dist 目录推送到 gh-pages 分支
-cd dist
-git init && git add . && git commit -m "Deploy"
+# 将 index.html 推送到 gh-pages 分支
+git init && git add index.html && git commit -m "Deploy"
 git remote add origin <your-repo>
 git push -f origin main:gh-pages
 ```
@@ -76,15 +70,13 @@ git push -f origin main:gh-pages
 1. 安装依赖: `pnpm install`
 2. 类型检查: `tsc`
 3. 构建: `vite build` (生成单文件)
-4. 打包: `tar -czf release-package.tar.gz dist/*`
-5. 创建 Release 并上传
+4. 创建 Release 并上传 `index.html`
 
 ## 📝 发布前检查
 
 - [ ] 代码已提交到 main 分支
 - [ ] 本地测试: `pnpm build` 通过
 - [ ] 确定版本号（语义化版本）
-- [ ] 更新 README.md（如有必要）
 
 ## 🆘 常见问题
 
@@ -97,12 +89,8 @@ A: 创建新 tag 并推送
 **Q: 可以发布测试版吗？**
 A: 可以，使用 `v1.0.0-beta` 等格式
 
-**Q: 新版本有什么变化？**
-A: 从 Next.js 迁移到 Vite，支持 file:// 协议，单文件部署
-
 ## 💡 小贴士
 
 - 发布前先本地测试 `pnpm build`
 - 使用语义化版本号（v1.0.0, v1.0.1, v1.1.0）
-- 发布后检查 Release 页面内容
-- ✨ 新版本支持直接双击 index.html 使用！
+- ✨ 直接下载 index.html 即可使用，无需解压！

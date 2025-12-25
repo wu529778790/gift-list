@@ -40,22 +40,15 @@ jobs:
         env:
           VITE_TELEMETRY_DISABLED: '1'
 
-      - name: Create release package
+      - name: Prepare release files
         run: |
-          # 创建打包目录
-          mkdir -p release-package
-
-          # 复制构建产物（单文件）
-          echo "📦 复制构建文件..."
-          cp dist/index.html release-package/
-
-          # 复制 README
-          echo "📝 复制说明文件..."
-          cp README.md release-package/
+          # 复制构建产物
+          echo "📦 准备发布文件..."
+          cp dist/index.html ./
 
           # 生成版本信息
           TAG_NAME="${{ github.ref_name || inputs.tag_name }}"
-          cat > release-package/VERSION.txt << EOF
+          cat > VERSION.txt << EOF
           礼簿系统版本: $TAG_NAME
           构建时间: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
           Commit: ${{ github.sha }}
@@ -63,15 +56,9 @@ jobs:
           构建者: ${{ github.actor }}
           EOF
 
-          # 压缩打包
-          echo "🗜️ 压缩打包中..."
-          tar -czf release-package.tar.gz -C release-package .
-
-          # 显示打包结果
-          echo "✅ 打包完成: release-package.tar.gz"
-          ls -lh release-package.tar.gz
-          echo "📦 包含内容:"
-          tar -tzf release-package.tar.gz
+          # 显示结果
+          echo "✅ 准备完成"
+          ls -lh index.html VERSION.txt
 
       - name: Get or Create Tag
         id: get_tag
@@ -101,23 +88,20 @@ jobs:
             - ✅ **数据加密**：AES-256 加密 + SHA-256 密码哈希
             - ✅ **双屏联动**：实时同步副屏展示
 
-            ### 📦 包含内容
+            ### 📦 包含文件
             - `index.html` - 单文件应用（可直接打开）
-            - `README.md` - 使用说明
             - `VERSION.txt` - 版本信息
 
             ### 🚀 快速开始（无需服务器！）
 
             **方式1: 直接打开（推荐）**
             ```bash
-            tar -xzf release-package.tar.gz
-            cd release-package
-            # 双击 index.html 或 Ctrl+O 在浏览器打开
+            # 下载 index.html
+            # 双击即可使用！
             ```
 
             **方式2: 本地服务器**
             ```bash
-            cd release-package
             npx serve .
             # 访问: http://localhost:3000
             ```
@@ -144,7 +128,9 @@ jobs:
             - 数据存储: localStorage
             - 加密方式: AES-256
 
-          files: release-package.tar.gz
+          files: |
+            index.html
+            VERSION.txt
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
