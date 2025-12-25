@@ -236,7 +236,26 @@ export default function MainPage() {
 
   // 导出 Excel
   const exportExcel = () => {
-    alert('导出Excel功能将在后续版本中实现');
+    try {
+      // 获取所有有效礼金数据（已解密）
+      const validGifts = state.gifts
+        .filter((g) => g.data && !g.data.abolished)
+        .map((g) => g.data!);
+
+      if (validGifts.length === 0) {
+        alert('暂无礼金记录可导出');
+        return;
+      }
+
+      // 调用备份服务导出Excel
+      BackupService.exportExcel(
+        state.currentEvent!.name,
+        validGifts,
+        state.currentEvent!
+      );
+    } catch (error) {
+      alert('导出Excel失败：' + (error as Error).message);
+    }
   };
 
   // 导出 PDF（打印所有数据，横屏展示）

@@ -1,4 +1,6 @@
-import { Event, GiftRecord } from '@/types';
+import { Event, GiftRecord, GiftData } from '@/types';
+import { amountToChinese, formatDate } from '@/utils/format';
+import * as XLSX from 'xlsx';
 
 // 导入结果接口
 export interface ImportResult {
@@ -241,5 +243,200 @@ export class BackupService {
       gifts: totalGifts,
       lastModified,
     };
+  }
+
+  /**
+   * 导出指定事件为 Excel 文件
+   * @param eventName 事件名称
+   * @param gifts 解密后的礼金数据列表
+   * @param eventInfo 事件详细信息（可选，用于在Excel中显示事件信息）
+   */
+  static exportExcel(
+    eventName: string,
+    gifts: GiftData[],
+    eventInfo?: Event
+  ): void {
+    // 过滤掉已作废的记录
+    const validGifts = gifts.filter(g => !g.abolished);
+
+    if (validGifts.length === 0) {
+      alert('没有可导出的有效礼金记录');
+      return;
+    }
+
+    // 创建工作簿
+    const workbook = XLSX.utils.book_new();
+
+    // ========== 第一页：礼金明细表 ==========
+
+    // 准备表头数据
+    const headers = [
+      '序号',
+      '姓名',
+      '金额（元）',
+      '金额大写',
+      '支付方式',
+      '备注',
+      '录入时间'
+    ];
+
+    // 准备数据行
+    const dataRows = validGifts.map((gift, index) => [
+      index + 1,
+      gift.name,
+      gift.amount,
+      amountToChinese(gift.amount),
+      gift.type,
+      gift.remark || '',
+      formatDate(gift.timestamp)
+    ]);
+
+    // 合并表头和数据
+    const sheetData = [headers, ...dataRows];
+
+    // 创建工作表
+    const detailSheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+    // 设置列宽
+    detailSheet['!cols'] = [
+      { wch: 6 },   // 序号
+      { wch: 12 },  // 姓名
+      { wch: 12 },  // 金额
+      { wch: 25 },  // 金额大写
+      { wch: 10 },  // 支付方式
+      { wch: 20 },  // 备注
+      { wch: 12 }   // 时间
+    ];
+
+    // 设置单元格样式（表头加粗）
+    for (let C = 0; C < headers.length; ++C) {
+      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: C });
+      if (!detailSheet[cellAddress]) continue;
+      detailSheet[cellAddress].s = {
+        font: { bold: true, name: '宋体' },
+        alignment: { horizontal: 'center', vertical: 'center' },
+        fill: { fgColor: { rgb: 'FFE3E3E3' } }
+      };
+    }
+
+    // 数据行样式
+    for (let R = 1; R < sheetData.length; ++R) {
+      for (let C = 0; C < headers.length; ++C) {
+        const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+        if (!detailSheet[cellAddress]) continue;
+        detailSheet[cellAddress].s = {
+          font: { name: '宋体' },
+          alignment: { horizontal: 'center', vertical: 'center' }
+        };
+      }
+    }
+
+    // 添加到工作簿
+    XLSX.utils.book_append_sheet(workbook, detailSheet, '礼金明细');
+
+    // ========== 第二页：统计汇总 ==========
+
+    // 计算统计数据
+    const totalAmount = validGifts.reduce((sum, g) => sum + g.amount, 0);
+    const totalPeople = validGifts.length;
+
+    // 按支付方式统计
+    const typeStats: Record<string, number> = {};
+    const typeCount: Record<string, number> = {};
+    validGifts.forEach(g => {
+      typeStats[g.type] = (typeStats[g.type] || 0) + g.amount;
+      typeCount[g.type] = (typeCount[g.type] || 0) + 1;
+    });
+
+    // 准备统计数据
+    const statsData = [
+      ['==========', '========', '========', '========'],
+      ['统计项目', '数值', '说明', ''],
+      ['==========', '========', '========', '========'],
+      ['总人数', totalPeople, '人', ''],
+      ['总金额', totalAmount, '元', amountToChinese(totalAmount)],
+      ['', '', '', ''],
+      ['支付方式统计', '', '', ''],
+      ['----------', '--------', '--------', '--------']
+    ];
+
+    // 添加各支付方式统计
+    Object.keys(typeStats).forEach(type => {
+      statsData.push([
+        type,
+        typeStats[type],
+        `${typeCount[type]}笔`,
+        amountToChinese(typeStats[type])
+      ]);
+    });
+
+    // 事件信息（如果有）
+    if (eventInfo) {
+      statsData.push(['', '', '', '']);
+      statsData.push(['事件信息', '', '', '']);
+      statsData.push(['----------', '--------', '--------', '--------']);
+      statsData.push(['事件名称', eventInfo.name, '', '']);
+      statsData.push(['开始时间', formatDate(eventInfo.startDateTime), '', '']);
+      statsData.push(['结束时间', formatDate(eventInfo.endDateTime), '', '']);
+      if (eventInfo.recorder) {
+        statsData.push(['记账人', eventInfo.recorder, '', '']);
+      }
+      statsData.push(['导出时间', formatDate(new Date().toISOString()), '', '']);
+    }
+
+    const summarySheet = XLSX.utils.aoa_to_sheet(statsData);
+
+    // 设置统计表的列宽
+    summarySheet['!cols'] = [
+      { wch: 18 },
+      { wch: 15 },
+      { wch: 15 },
+      { wch: 30 }
+    ];
+
+    // 设置统计表样式
+    for (let R = 0; R < statsData.length; ++R) {
+      for (let C = 0; C < 4; ++C) {
+        const cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+        if (!summarySheet[cellAddress]) continue;
+
+        // 表头加粗
+        if (R <= 2 || statsData[R][0] === '支付方式统计' || statsData[R][0] === '事件信息') {
+          summarySheet[cellAddress].s = {
+            font: { bold: true, name: '宋体' },
+            alignment: { horizontal: 'center', vertical: 'center' }
+          };
+        } else {
+          summarySheet[cellAddress].s = {
+            font: { name: '宋体' },
+            alignment: { horizontal: 'center', vertical: 'center' }
+          };
+        }
+      }
+    }
+
+    // 添加到工作簿
+    XLSX.utils.book_append_sheet(workbook, summarySheet, '统计汇总');
+
+    // ========== 生成文件并下载 ==========
+
+    // 清理文件名中的特殊字符
+    const safeName = eventName.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '');
+    const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const filename = `礼簿_${safeName}_${dateStr}.xlsx`;
+
+    // 生成 Excel 文件（二进制）
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+    // 创建 Blob 并下载
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 }
