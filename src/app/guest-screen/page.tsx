@@ -208,30 +208,28 @@ export default function GuestScreen() {
         <h1 className="guest-screen-title">{data.eventName}</h1>
       </div>
 
-      {/* 礼簿内容 - 在下方，使用翻页动画 */}
-      <div className={`flip-container ${isFlipping ? "flipping" : ""}`}>
-        <div className="gift-book-columns">
-          {currentPageData.map((gift, idx) => {
-            const isLatest =
-              currentPage === totalPages - 1 &&
-              idx === currentPageData.length - 1;
-            return (
-              <div
-                key={idx}
-                className={`gift-book-column ${isLatest ? "latest" : ""}`}
-                data-index={idx}>
-                <div className="book-cell name-cell column-top">
-                  <div className="name">{formatName(gift.name)}</div>
-                </div>
-                <div className="book-cell amount-cell column-bottom">
-                  <div className="amount-chinese">
-                    {Utils.amountToChinese(gift.amount)}
-                  </div>
+      {/* 礼簿内容 - 直接使用翻页动画 */}
+      <div className={`gift-book-columns ${isFlipping ? "flipping" : ""}`}>
+        {currentPageData.map((gift, idx) => {
+          const isLatest =
+            currentPage === totalPages - 1 &&
+            idx === currentPageData.length - 1;
+          return (
+            <div
+              key={idx}
+              className={`gift-book-column ${isLatest ? "latest" : ""}`}
+              data-index={idx}>
+              <div className="book-cell name-cell column-top">
+                <div className="name">{formatName(gift.name)}</div>
+              </div>
+              <div className="book-cell amount-cell column-bottom">
+                <div className="amount-chinese">
+                  {Utils.amountToChinese(gift.amount)}
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
