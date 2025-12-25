@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/store/appStore';
 import { CryptoService } from '@/lib/crypto';
+import { BackupService } from '@/lib/backup';
 import PageLayout from '@/components/layout/PageLayout';
 import FormLayout from '@/components/layout/FormLayout';
 import Button from '@/components/ui/Button';
@@ -193,14 +194,37 @@ export default function Home() {
   // 密码输入界面
   if (showPasswordInput) {
     return (
-      <PageLayout 
-        title="电子礼簿系统" 
+      <PageLayout
+        title="电子礼簿系统"
         subtitle={selectedEvent ? "请输入密码继续" : "请选择事件并输入密码"}
       >
         <FormLayout>
+          {/* 备份提醒 */}
+          {BackupService.hasData() && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+              <div className="flex items-start gap-2">
+                <span className="text-yellow-600">⚠️</span>
+                <div>
+                  <p className="font-semibold text-yellow-800 text-sm">重要提醒</p>
+                  <p className="text-xs text-yellow-700 mt-1">
+                    所有数据存储在浏览器中。请定期导出备份，防止数据丢失！
+                  </p>
+                  <div className="mt-2 flex gap-2">
+                    <Button
+                      size="sm"
+                      onClick={() => navigate('/main')}
+                    >
+                      立即备份
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* 事件列表（当没有默认选择时） */}
           {!selectedEvent && state.events.length > 0 && (
-            <EventSelector 
+            <EventSelector
               events={state.events}
               onSelect={(event) => {
                 setSelectedEvent(event);

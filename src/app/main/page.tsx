@@ -7,6 +7,8 @@ import MainLayout from "@/components/layout/MainLayout";
 import GiftEntryForm from "@/components/business/GiftEntryForm";
 import Button from "@/components/ui/Button";
 import { formatDateTime } from "@/utils/format";
+import { BackupService, ImportResult } from "@/lib/backup";
+import ImportBackupModal from "@/components/business/ImportBackupModal";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -28,6 +30,8 @@ export default function MainPage() {
     remark: '',
   });
   const [chineseAmount, setChineseAmount] = useState('');
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [importSuccessMsg, setImportSuccessMsg] = useState<string | null>(null);
 
   // 检查是否有会话，如果没有则返回首页
   useEffect(() => {
@@ -240,12 +244,41 @@ export default function MainPage() {
     window.print();
   };
 
+  // 导出备份
+  const exportBackup = () => {
+    try {
+      BackupService.exportEvent(state.currentEvent!.id, state.currentEvent!.name);
+    } catch (error) {
+      alert('导出失败：' + (error as Error).message);
+    }
+  };
+
   // 打开副屏
   const openGuestScreen = () => {
     // 获取当前页面的完整路径，替换 hash 部分为副屏路径
     const currentUrl = window.location.href;
     const baseUrl = currentUrl.split('#')[0];
     window.open(`${baseUrl}#/guest-screen`, "_blank", "width=1200,height=800");
+  };
+
+  // 导入备份成功
+  const handleImportSuccess = (result: ImportResult) => {
+    // 刷新当前事件的礼物数据
+    if (state.currentEvent) {
+      actions.loadGifts(state.currentEvent.id, state.currentPassword!);
+    }
+
+    // 显示成功消息
+    let msg = `成功导入 ${result.events} 个事件、${result.gifts} 条礼金记录`;
+    if (result.conflicts > 0) {
+      msg += `，跳过 ${result.conflicts} 条重复记录`;
+    }
+    setImportSuccessMsg(msg);
+
+    // 3秒后自动清除消息
+    setTimeout(() => {
+      setImportSuccessMsg(null);
+    }, 5000);
   };
 
 
@@ -288,9 +321,37 @@ export default function MainPage() {
               >
                 开启副屏
               </Button>
+              <Button
+                variant="secondary"
+                onClick={exportBackup}
+              >
+                💾 导出备份
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => setShowImportModal(true)}
+              >
+                📂 导入备份
+              </Button>
             </div>
           </div>
         </div>
+
+        {/* 导入成功提示 */}
+        {importSuccessMsg && (
+          <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center justify-between animate-fade-in">
+            <div className="flex items-center gap-2 text-green-800">
+              <span>✅</span>
+              <span className="text-sm">{importSuccessMsg}</span>
+            </div>
+            <button
+              onClick={() => setImportSuccessMsg(null)}
+              className="text-green-600 hover:text-green-800 font-bold"
+            >
+              ×
+            </button>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* 左侧：录入表单 */}
@@ -621,6 +682,13 @@ export default function MainPage() {
             </div>
           </div>
         )}
+
+      {/* 导入备份模态框 */}
+      <ImportBackupModal
+        isOpen={showImportModal}
+        onClose={() => setShowImportModal(false)}
+        onImportSuccess={handleImportSuccess}
+      />
       </div>
     </MainLayout>
   );
