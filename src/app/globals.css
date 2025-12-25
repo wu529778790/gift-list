@@ -1005,7 +1005,6 @@ input[type="checkbox"].themed-ring:checked {
 /* 副屏网格容器 - 单行展示，固定12列，高度自适应 */
 .guest-screen-wrapper .gift-book-columns {
   flex: 1;
-  overflow: hidden; /* 防止hover时出现滚动条 */
   display: grid;
   grid-template-columns: repeat(12, 1fr); /* 固定12列，单行展示 */
   grid-auto-rows: 1fr; /* 高度自适应，填满容器 */
