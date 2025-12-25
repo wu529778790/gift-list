@@ -977,8 +977,6 @@ input[type="checkbox"].themed-ring:checked {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 3px solid var(--primary-color);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 /* 标题居中盒子 */
@@ -993,7 +991,12 @@ input[type="checkbox"].themed-ring:checked {
   font-family: "KaiTi", "楷体", serif;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   padding: 8px 20px;
-  background: linear-gradient(to right, transparent, var(--primary-bg-light), transparent);
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--primary-bg-light),
+    transparent
+  );
   border-radius: 8px;
   white-space: nowrap;
 }
@@ -1012,8 +1015,6 @@ input[type="checkbox"].themed-ring:checked {
   border-radius: 8px;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 4px;
-  width: 100%;
-  max-width: 100%;
   height: calc(100% - 40px);
   margin: 20px 30px 24px 30px;
   box-sizing: border-box;
