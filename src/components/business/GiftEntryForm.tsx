@@ -4,7 +4,6 @@ import { Utils } from "@/lib/utils";
 import { speakGiftData, speakSuccess, isVoiceSupported } from "@/lib/voice";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import VoiceControl from "@/components/ui/VoiceControl";
 
 interface GiftEntryFormProps {
   onSubmit: (giftData: {
@@ -151,32 +150,12 @@ const GiftEntryForm: React.FC<GiftEntryFormProps> = ({
         {loading ? "录入中..." : "确认录入"}
       </Button>
 
-      {/* 语音控制区域 */}
-      <div className="pt-3 border-t themed-border flex items-center justify-between">
-        <div className="text-xs text-gray-500">
-          {isVoiceSupported() ? (
-            <span>✅ 语音播报已就绪</span>
-          ) : (
-            <span>⚠️ 您的浏览器不支持语音播报</span>
-          )}
+      {/* 语音状态提示 */}
+      {isVoiceSupported() && (
+        <div className="pt-3 border-t themed-border text-xs text-gray-500 text-center">
+          ✅ 语音播报已就绪
         </div>
-        {isVoiceSupported() && (
-          <VoiceControl
-            onTest={() => {
-              if (formData.name && formData.amount) {
-                speakGiftData(
-                  formData.name.trim(),
-                  parseFloat(formData.amount),
-                  formData.type,
-                  formData.remark.trim() || undefined
-                );
-              } else {
-                speakGiftData("测试用户", 888, "现金", "测试播报");
-              }
-            }}
-          />
-        )}
-      </div>
+      )}
     </form>
   );
 };

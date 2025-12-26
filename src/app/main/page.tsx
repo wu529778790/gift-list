@@ -9,7 +9,7 @@ import Button from "@/components/ui/Button";
 import { formatDateTime } from "@/utils/format";
 import { BackupService, ImportResult } from "@/lib/backup";
 import ImportBackupModal from "@/components/business/ImportBackupModal";
-import { speakError, speakText, isVoiceSupported, stopVoice } from "@/lib/voice";
+import { speakError, speakText, isVoiceSupported } from "@/lib/voice";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -33,7 +33,6 @@ export default function MainPage() {
   const [chineseAmount, setChineseAmount] = useState("");
   const [showImportModal, setShowImportModal] = useState(false);
   const [importSuccessMsg, setImportSuccessMsg] = useState<string | null>(null);
-  const [voiceStatus, setVoiceStatus] = useState<'ready' | 'speaking' | 'off'>('off');
 
   // 检查是否有会话，如果没有则返回首页
   useEffect(() => {
@@ -46,34 +45,6 @@ export default function MainPage() {
   useEffect(() => {
     syncDataToGuestScreen();
   }, [state.gifts, state.currentEvent?.id]);
-
-  // 监听语音状态
-  useEffect(() => {
-    if (!isVoiceSupported()) {
-      setVoiceStatus('off');
-      return;
-    }
-
-    const synth = window.speechSynthesis;
-
-    // 初始检查
-    if (synth.speaking) {
-      setVoiceStatus('speaking');
-    } else {
-      setVoiceStatus('ready');
-    }
-
-    // 定时检查
-    const checkInterval = setInterval(() => {
-      if (synth.speaking) {
-        setVoiceStatus('speaking');
-      } else {
-        setVoiceStatus('ready');
-      }
-    }, 200);
-
-    return () => clearInterval(checkInterval);
-  }, []);
 
   if (!state.currentEvent) {
     return null; // 或者显示加载状态
@@ -639,28 +610,6 @@ export default function MainPage() {
     }, 5000);
   };
 
-  // 语音控制处理
-  const handleVoiceControl = () => {
-    if (!isVoiceSupported()) return;
-
-    if (voiceStatus === 'speaking') {
-      stopVoice();
-      setVoiceStatus('ready');
-    } else if (voiceStatus === 'ready') {
-      // 播报当前统计数据
-      const validGifts = state.gifts
-        .filter((g) => g.data && !g.data.abolished)
-        .map((g) => g.data!);
-      const totalAmount = validGifts.reduce((sum, g) => sum + g.amount, 0);
-      const totalGivers = validGifts.length;
-
-      if (totalGivers > 0) {
-        speakText(`当前共${totalGivers}人，总金额${Utils.amountToChinese(totalAmount)}元`);
-      } else {
-        speakText("暂无礼金记录");
-      }
-    }
-  };
 
   return (
     <MainLayout theme={state.currentEvent.theme}>
@@ -700,21 +649,6 @@ export default function MainPage() {
                 onClick={() => setShowImportModal(true)}>
                 📂 导入备份
               </Button>
-              {isVoiceSupported() && (
-                <Button
-                  variant="secondary"
-                  onClick={handleVoiceControl}
-                  className={
-                    voiceStatus === 'speaking'
-                      ? 'bg-green-100 text-green-700 border-green-300 animate-pulse'
-                      : voiceStatus === 'ready'
-                        ? 'bg-blue-50 text-blue-600 border-blue-200'
-                        : ''
-                  }>
-                  {voiceStatus === 'speaking' ? '🔊 停止播报' :
-                   voiceStatus === 'ready' ? '🔊 播报统计' : '🔇 语音关闭'}
-                </Button>
-              )}
             </div>
           </div>
         </div>
