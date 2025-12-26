@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GiftType, GiftData } from "@/types";
+import { GiftType } from "@/types";
 import { Utils } from "@/lib/utils";
 import { useAppStore } from "@/store/appStore";
 import MainLayout from "@/components/layout/MainLayout";
@@ -295,56 +295,6 @@ export default function MainPage() {
     }
   };
 
-  // 导出所有事件数据（Excel）
-  const exportAllData = async () => {
-    try {
-      // 检查是否有数据
-      if (!BackupService.hasData()) {
-        alert("暂无数据可导出");
-        return;
-      }
-
-      // 获取所有事件
-      const events = state.events;
-      if (events.length === 0) {
-        alert("暂无事件数据");
-        return;
-      }
-
-      // 获取礼金数据的函数（无需密码）
-      const giftDataGetter = (eventId: string): GiftData[] => {
-        try {
-          const stored = localStorage.getItem(`giftlist_gifts_${eventId}`);
-          if (!stored) return [];
-
-          const records = JSON.parse(stored);
-          const gifts: GiftData[] = [];
-
-          for (const record of records) {
-            try {
-              const data = JSON.parse(record.encryptedData) as GiftData;
-              if (data && !data.abolished) {
-                gifts.push(data);
-              }
-            } catch (e) {
-              console.warn(`解析失败: ${record.id}`);
-            }
-          }
-
-          return gifts;
-        } catch (error) {
-          console.error("获取数据失败:", error);
-          return [];
-        }
-      };
-
-      // 调用备份服务导出所有事件
-      await BackupService.exportAllExcel(giftDataGetter);
-
-    } catch (error) {
-      alert("导出失败：" + (error as Error).message);
-    }
-  };
 
   // 导出 PDF（打印所有数据，横屏展示）
   const exportPDF = () => {
@@ -679,9 +629,6 @@ export default function MainPage() {
               </Button>
               <Button variant="secondary" onClick={exportData}>
                 📊 导出数据
-              </Button>
-              <Button variant="secondary" onClick={exportAllData}>
-                📚 导出全部
               </Button>
               <Button variant="secondary" onClick={openGuestScreen}>
                 开启副屏
