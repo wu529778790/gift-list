@@ -1,6 +1,5 @@
 import { Event } from '@/types';
 import { BackupService } from '@/lib/backup';
-import { useNavigate } from 'react-router-dom';
 import EventSelector from '@/components/business/EventSelector';
 import Button from '@/components/ui/Button';
 
@@ -17,8 +16,6 @@ export default function EventSelection({
   onCreateNew,
   onImport,
 }: EventSelectionProps) {
-  const navigate = useNavigate();
-
   return (
     <>
       {/* 备份提醒 */}
@@ -31,14 +28,6 @@ export default function EventSelection({
               <p className="text-xs text-yellow-700 mt-1">
                 所有数据存储在浏览器中。请定期导出备份，防止数据丢失！
               </p>
-              <div className="mt-2 flex gap-2">
-                <Button
-                  size="sm"
-                  onClick={() => navigate('/main')}
-                >
-                  立即备份
-                </Button>
-              </div>
             </div>
           </div>
         </div>
