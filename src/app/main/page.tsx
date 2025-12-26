@@ -5,7 +5,11 @@ import { useAppStore } from "@/store/appStore";
 import MainLayout from "@/components/layout/MainLayout";
 import GiftEntryForm from "@/components/business/GiftEntryForm";
 import Button from "@/components/ui/Button";
-import { formatDateTime, amountToChinese, formatCurrency } from "@/utils/format";
+import {
+  formatDateTime,
+  amountToChinese,
+  formatCurrency,
+} from "@/utils/format";
 import { BackupService, ExcelImportResult } from "@/lib/backup";
 import ImportExcelModal from "@/components/business/ImportExcelModal";
 import { speakError, speakText, isVoiceSupported } from "@/lib/voice";
@@ -198,7 +202,11 @@ export default function MainPage() {
 
       // 语音播报修改成功
       if (isVoiceSupported()) {
-        speakText(`修改成功，${editFormData.name.trim()}，${amountToChinese(amount)}元，${editFormData.type}`);
+        speakText(
+          `修改成功，${editFormData.name.trim()}，${amountToChinese(
+            amount
+          )}元，${editFormData.type}`
+        );
       }
     } else {
       alert("更新失败，请重试");
@@ -293,7 +301,6 @@ export default function MainPage() {
       alert("导出Excel失败：" + (error as Error).message);
     }
   };
-
 
   // 导出 PDF（打印所有数据，横屏展示）
   const exportPDF = () => {
@@ -601,7 +608,6 @@ export default function MainPage() {
     }, 5000);
   };
 
-
   return (
     <MainLayout theme={state.currentEvent.theme}>
       <div className="space-y-4">
@@ -626,16 +632,16 @@ export default function MainPage() {
               <Button variant="primary" onClick={exportPDF}>
                 打印/PDF
               </Button>
+              <Button
+                variant="secondary"
+                onClick={() => setShowImportModal(true)}>
+                📥 导入数据
+              </Button>
               <Button variant="secondary" onClick={exportData}>
                 📊 导出数据
               </Button>
               <Button variant="secondary" onClick={openGuestScreen}>
                 开启副屏
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => setShowImportModal(true)}>
-                📥 导入数据
               </Button>
             </div>
           </div>
