@@ -289,7 +289,7 @@ export default function MainPage() {
           .print-container { width: 100%; height: 100%; padding: 5mm; box-sizing: border-box; }
           .print-header { margin-bottom: 8mm; padding-bottom: 3mm; border-bottom: 3px solid ${colors.primary}; background: linear-gradient(to right, ${colors.bg}, white); padding: 3mm 2mm; border-radius: 4px; }
           .print-header h1 { font-size: 26pt; margin: 0 0 5mm 0; font-weight: bold; text-align: center; color: ${colors.primary}; letter-spacing: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-          .print-header .info { display: flex; justify-content: space-between; font-size: 10pt; color: ${colors.text}; margin-bottom: 3mm; font-weight: 500; }
+          .print-header .info { display: flex; justify-content: space-between; font-size: 10pt; color: ${colors.secondary}; margin-bottom: 3mm; font-weight: 500; }
           .print-header .stats { display: flex; justify-content: center; gap: 8mm; margin-top: 2mm; font-size: 10pt; flex-wrap: wrap; align-items: center; }
           .print-header .stats .type-stat { display: inline-flex; flex-direction: column; align-items: center; white-space: nowrap; color: ${colors.stats}; background: white; padding: 1mm 2mm; border-radius: 3px; border: 1px solid ${colors.border}; min-width: 18mm; }
           .print-header .stats .type-stat em { font-style: normal; font-size: 8pt; margin-bottom: 0.5mm; opacity: 0.8; }
@@ -297,7 +297,7 @@ export default function MainPage() {
           .print-gift-columns { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5mm; grid-auto-rows: minmax(38mm, auto); margin-bottom: 10mm; }
           .print-gift-column { display: grid; grid-template-rows: 1fr 1.2fr; border: 2px solid ${colors.border}; border-radius: 4px; overflow: hidden; page-break-inside: avoid; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
           .book-cell { display: grid; place-items: center; writing-mode: vertical-lr; text-orientation: mixed; font-weight: bold; padding: 10px 0; overflow: hidden; text-align: center; line-height: 1.2; }
-          .name-cell { border-bottom: 2px solid ${colors.border}; font-size: 19pt; color: ${colors.text}; background: ${isFestive ? "linear-gradient(to bottom, #fff, #fff5f5)" : "linear-gradient(to bottom, #fff, #f8f9fa)"}; }
+          .name-cell { border-bottom: 2px solid ${colors.border}; font-size: 19pt; color: ${colors.secondary}; background: ${isFestive ? "linear-gradient(to bottom, #fff, #fff5f5)" : "linear-gradient(to bottom, #fff, #f8f9fa)"}; }
           .amount-cell { font-size: 17pt; color: ${colors.primary}; background: white; }
           @media print {
             @page { margin: 10mm; }
