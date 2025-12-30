@@ -42,30 +42,31 @@ export default function MainHeader({
           </p>
         </div>
         <div className="flex gap-2 flex-wrap no-print items-center">
-          <Button variant="secondary" onClick={onOpenSearch}>
+          <Button variant="secondary" onClick={onOpenSearch} size="sm">
             🔍 搜索
           </Button>
 
           <Button variant="danger" size="sm" onClick={onGoHome}>
             返回首页
           </Button>
-          <Button variant="primary" onClick={onExportPDF}>
+          <Button variant="primary" size="sm" onClick={onExportPDF}>
             打印/PDF
           </Button>
           <Button
             variant="secondary"
+            size="sm"
             onClick={onImport}
           >
-            📥 导入数据
+            📥 导入
           </Button>
-          <Button variant="secondary" onClick={onExportExcel}>
-            📊 导出数据
+          <Button variant="secondary" size="sm" onClick={onExportExcel}>
+            📊 导出
           </Button>
-          <Button variant="secondary" onClick={handleDownloadTemplate}>
-            📋 下载模板
+          <Button variant="secondary" size="sm" onClick={handleDownloadTemplate}>
+            📋 模板
           </Button>
-          <Button variant="secondary" onClick={onOpenGuestScreen}>
-            开启副屏
+          <Button variant="secondary" size="sm" onClick={onOpenGuestScreen}>
+            🖥️ 副屏
           </Button>
         </div>
       </div>
