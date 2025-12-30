@@ -122,11 +122,6 @@ const ImportExcelModal: React.FC<ImportExcelModalProps> = ({
 
   // 渲染步骤1：选择文件
   const renderSelectStep = () => {
-    const handleDownloadTemplate = () => {
-      BackupService.exportTemplate();
-      success('Excel模板已下载，请查看浏览器下载文件夹');
-    };
-
     return (
       <div className="space-y-4">
         <div className="text-center p-8 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-400 transition-colors">
@@ -145,15 +140,6 @@ const ImportExcelModal: React.FC<ImportExcelModalProps> = ({
             {loading ? '读取中...' : '选择 Excel 文件'}
           </label>
           <p className="text-xs text-gray-400 mt-4">支持 .xlsx 和 .xls 格式</p>
-        </div>
-
-        <div className="flex gap-2">
-          <Button
-            variant="secondary"
-            onClick={handleDownloadTemplate}
-            className="flex-1">
-            📋 下载导入模板
-          </Button>
         </div>
 
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800">

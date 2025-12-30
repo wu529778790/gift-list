@@ -1,8 +1,6 @@
 import { Event } from '@/types';
 import { formatDateTime } from '@/utils/format';
 import Button from '@/components/ui/Button';
-import { BackupService } from '@/lib/backup';
-import { success } from '@/components/ui/Toast';
 
 interface MainHeaderProps {
   event: Event;
@@ -23,10 +21,6 @@ export default function MainHeader({
   onOpenGuestScreen,
   onOpenSearch,
 }: MainHeaderProps) {
-  const handleDownloadTemplate = () => {
-    BackupService.exportTemplate();
-    success('Excel模板已下载，请查看浏览器下载文件夹');
-  };
 
   return (
     <div className="card themed-bg-light p-4">
@@ -61,9 +55,6 @@ export default function MainHeader({
           </Button>
           <Button variant="secondary" size="sm" onClick={onExportExcel}>
             📊 导出
-          </Button>
-          <Button variant="secondary" size="sm" onClick={handleDownloadTemplate}>
-            📋 模板
           </Button>
           <Button variant="secondary" size="sm" onClick={onOpenGuestScreen}>
             🖥️ 副屏
