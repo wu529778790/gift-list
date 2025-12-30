@@ -167,16 +167,16 @@ export default function SearchFilterModal({
               <label className="block text-sm font-medium text-gray-700 mb-2">筛选结果预览</label>
               <div className="space-y-2 max-h-60 overflow-y-auto border rounded-lg p-2 bg-gray-50">
                 {filteredGifts.map((gift, index) => (
-                  <div key={index} className="flex justify-between items-start p-2 bg-white rounded border text-sm gap-2">
+                  <div key={index} className="flex justify-between items-start p-2 bg-white rounded border gap-2">
                     <div className="flex-1 min-w-0">
-                      <div className="font-bold text-base md:text-sm">{gift.name}</div>
-                      <div className="text-xs text-gray-500 mt-0.5">
+                      <div className="font-bold text-lg md:text-base">{gift.name}</div>
+                      <div className="text-sm text-gray-500 mt-1">
                         <span className="hidden md:inline">{formatDateTime(gift.timestamp)} | </span>
                         <span className="text-gray-600">{gift.type}</span>
                         {gift.remark && <span className="ml-1 text-gray-500">| {gift.remark}</span>}
                       </div>
                     </div>
-                    <div className="font-bold themed-text text-base md:text-sm whitespace-nowrap">
+                    <div className="font-bold themed-text text-lg md:text-base whitespace-nowrap mt-0.5">
                       {formatCurrency(gift.amount)}
                     </div>
                   </div>
