@@ -12,6 +12,7 @@ interface SearchFilterModalProps {
   onClear: () => void;
   filteredCount: number;
   totalCount: number;
+  theme: "festive" | "solemn";
 }
 
 export default function SearchFilterModal({
@@ -26,8 +27,39 @@ export default function SearchFilterModal({
   onClear,
   filteredCount,
   totalCount,
+  theme,
 }: SearchFilterModalProps) {
   if (!isOpen) return null;
+
+  // 根据主题设置颜色
+  const colors = {
+    festive: {
+      primary: 'red',
+      primaryBg: 'bg-red-500',
+      primaryHover: 'hover:bg-red-600',
+      primaryBorder: 'border-red-500',
+      activeBg: 'bg-red-600',
+      activeHover: 'hover:bg-red-700',
+      activeBorder: 'border-red-600',
+      infoBg: 'bg-red-50',
+      infoBorder: 'border-red-200',
+      infoText: 'text-red-800',
+    },
+    solemn: {
+      primary: 'gray',
+      primaryBg: 'bg-gray-600',
+      primaryHover: 'hover:bg-gray-700',
+      primaryBorder: 'border-gray-600',
+      activeBg: 'bg-gray-700',
+      activeHover: 'hover:bg-gray-800',
+      activeBorder: 'border-gray-700',
+      infoBg: 'bg-gray-50',
+      infoBorder: 'border-gray-200',
+      infoText: 'text-gray-800',
+    },
+  };
+
+  const color = colors[theme];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
@@ -56,18 +88,18 @@ export default function SearchFilterModal({
           <label className="block text-sm font-medium text-gray-700 mb-2">支付方式筛选</label>
           <div className="grid grid-cols-2 gap-2">
             {[
-              { value: "all", label: "📋 全部", icon: "📋" },
-              { value: "现金", label: "💵 现金", icon: "💵" },
-              { value: "微信", label: "💚 微信", icon: "💚" },
-              { value: "支付宝", label: "💙 支付宝", icon: "💙" },
-              { value: "其他", label: "📦 其他", icon: "📦" },
+              { value: "all", label: "📋 全部" },
+              { value: "现金", label: "💵 现金" },
+              { value: "微信", label: "💚 微信" },
+              { value: "支付宝", label: "💙 支付宝" },
+              { value: "其他", label: "📦 其他" },
             ].map((option) => (
               <button
                 key={option.value}
                 onClick={() => setFilterType(option.value as any)}
                 className={`px-3 py-2 rounded-lg text-sm border transition-all ${
                   filterType === option.value
-                    ? 'bg-blue-500 text-white border-blue-500 font-bold'
+                    ? `${color.activeBg} ${color.activeHover} text-white ${color.activeBorder} font-bold`
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                 }`}
               >
@@ -85,7 +117,7 @@ export default function SearchFilterModal({
               onClick={() => setSortOrder("desc")}
               className={`flex-1 px-4 py-2 rounded-lg text-sm border transition-all ${
                 sortOrder === "desc"
-                  ? 'bg-purple-500 text-white border-purple-500 font-bold'
+                  ? `${color.activeBg} ${color.activeHover} text-white ${color.activeBorder} font-bold`
                   : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
               }`}
             >
@@ -95,7 +127,7 @@ export default function SearchFilterModal({
               onClick={() => setSortOrder("asc")}
               className={`flex-1 px-4 py-2 rounded-lg text-sm border transition-all ${
                 sortOrder === "asc"
-                  ? 'bg-purple-500 text-white border-purple-500 font-bold'
+                  ? `${color.activeBg} ${color.activeHover} text-white ${color.activeBorder} font-bold`
                   : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
               }`}
             >
@@ -106,15 +138,15 @@ export default function SearchFilterModal({
 
         {/* 筛选结果统计 */}
         {(searchTerm || filterType !== "all") && (
-          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-            <div className="text-sm text-blue-800">
+          <div className={`mb-4 p-3 ${color.infoBg} border ${color.infoBorder} rounded-lg`}>
+            <div className={`text-sm ${color.infoText}`}>
               <div className="font-bold">📊 筛选结果</div>
               <div className="mt-1">
                 显示 <strong>{filteredCount}</strong> / {totalCount} 条记录
               </div>
               {searchTerm && (
                 <div className="mt-1">
-                  关键词: <strong>"{searchTerm}"</strong>
+                  关键词: <strong>\"{searchTerm}\"</strong>
                 </div>
               )}
               {filterType !== "all" && (
@@ -139,7 +171,7 @@ export default function SearchFilterModal({
           </button>
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors"
+            className={`flex-1 px-4 py-2 ${color.primaryBg} ${color.primaryHover} text-white rounded-lg font-medium transition-colors`}
           >
             ✅ 完成
           </button>

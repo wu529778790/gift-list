@@ -424,6 +424,9 @@ export default function MainPage() {
           onImport={() => setShowImportModal(true)}
           onExportExcel={exportData}
           onOpenGuestScreen={openGuestScreen}
+          onOpenSearch={() => setShowSearchModal(true)}
+          hasActiveFilter={searchTerm !== "" || filterType !== "all"}
+          filteredCount={filteredGifts.length}
         />
 
         {/* 导入成功提示 */}
@@ -474,24 +477,6 @@ export default function MainPage() {
           {/* 右侧：礼簿展示 + 页码统计 */}
           <div className="lg:col-span-2">
             <div className="gift-book-frame print-area">
-              {/* 搜索和筛选按钮 - 只在有数据时显示 */}
-              {state.gifts.length > 0 && (
-                <div className="mb-3 flex justify-end no-print">
-                  <button
-                    onClick={() => setShowSearchModal(true)}
-                    className="flex items-center gap-2 px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-colors shadow-sm"
-                  >
-                    <span className="text-lg">🔍</span>
-                    <span>搜索筛选</span>
-                    {(searchTerm || filterType !== "all") && (
-                      <span className="ml-1 px-1.5 py-0.5 bg-red-500 text-white text-xs rounded-full">
-                        {filteredGifts.length}
-                      </span>
-                    )}
-                  </button>
-                </div>
-              )}
-
               {/* 页码导航和本页统计 */}
               <div className="flex justify-between items-center mb-3 pb-3 border-b themed-border no-print text-sm">
                 <div className="flex items-center gap-3 font-bold themed-text">
@@ -584,6 +569,7 @@ export default function MainPage() {
           }}
           filteredCount={filteredGifts.length}
           totalCount={state.gifts.filter((g) => g.data && !g.data.abolished).length}
+          theme={state.currentEvent.theme}
         />
       </div>
     </MainLayout>
