@@ -301,8 +301,8 @@ export default function MainPage() {
         const amountChinese = amountToChinese(gift.amount);
         return `
         <div class="print-gift-column">
-          <div class="book-cell name-cell">${name}</div>
-          <div class="book-cell amount-cell">${amountChinese}</div>
+          <div class="book-cell name-cell column-top">${name}</div>
+          <div class="book-cell amount-cell column-bottom">${amountChinese}</div>
         </div>
       `;
       })
@@ -355,11 +355,14 @@ export default function MainPage() {
           .print-header .stats .type-stat { display: inline-flex; flex-direction: column; align-items: center; white-space: nowrap; color: ${colors.stats}; background: white; padding: 1mm 2mm; border-radius: 3px; border: 1px solid ${colors.border}; min-width: 18mm; }
           .print-header .stats .type-stat em { font-style: normal; font-size: 8pt; margin-bottom: 0.5mm; opacity: 0.8; }
           .print-header .stats .type-stat b { font-weight: bold; font-size: 11pt; }
-          .print-gift-columns { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5mm; grid-auto-rows: minmax(38mm, auto); margin-bottom: 10mm; }
-          .print-gift-column { display: grid; grid-template-rows: 1fr 1.2fr; border: 2px solid ${colors.border}; border-radius: 4px; overflow: hidden; page-break-inside: avoid; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-          .book-cell { display: grid; place-items: center; writing-mode: vertical-lr; text-orientation: mixed; font-weight: bold; padding: 10px 0; overflow: hidden; text-align: center; line-height: 1.2; }
-          .name-cell { border-bottom: 2px solid ${colors.border}; font-size: 19pt; color: ${colors.primary}; background: white; }
+          .print-gift-columns-wrapper { width: 100%; height: calc(100% - 45mm); display: flex; align-items: center; justify-content: center; }
+          .print-gift-columns { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.5mm; grid-auto-rows: minmax(35mm, auto); width: 100%; height: 100%; align-content: center; justify-content: center; }
+          .print-gift-column { display: grid; grid-template-rows: 1fr 1.2fr; border: 2px solid ${colors.border}; border-radius: 4px; overflow: hidden; page-break-inside: avoid; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); min-width: 0; height: 100%; }
+          .book-cell { display: grid; place-items: center; writing-mode: vertical-lr; text-orientation: mixed; font-weight: bold; padding: 10px 0; overflow: hidden; text-align: center; line-height: 1.2; width: 100%; height: 100%; }
+          .column-top { border-bottom: 2px solid ${colors.border}; }
+          .name-cell { font-size: 19pt; color: ${colors.primary}; background: white; }
           .amount-cell { font-size: 17pt; color: ${colors.primary}; background: white; }
+          .column-bottom { border-top: none; }
           @media print {
             body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           }
@@ -517,10 +520,13 @@ export default function MainPage() {
                 </div>
               </div>
 
-              <GiftBookDisplay
-                displayGifts={displayGifts}
-                onGiftClick={openDetailModal}
-              />
+              {/* 礼簿展示区域 - 列式布局 */}
+              <div className="gift-book-columns-wrapper">
+                <GiftBookDisplay
+                  displayGifts={displayGifts}
+                  onGiftClick={openDetailModal}
+                />
+              </div>
             </div>
           </div>
         </div>

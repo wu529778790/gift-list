@@ -109,31 +109,33 @@ export default function GuestScreen() {
 
   return (
     <div className={`guest-screen-wrapper ${themeClass}`}>
-      {/* 顶部标题 - 固定在上方 */}
+      {/* 顶部标题 - 居中大标题 */}
       <div className="guest-screen-header">
         <h1 className="guest-screen-title">{data.eventName}</h1>
       </div>
 
-      {/* 礼簿内容 - 显示最新数据 */}
-      <div className="gift-book-columns">
-        {allGifts.map((gift, idx) => {
-          const isLatest = idx === allGifts.length - 1;
-          return (
-            <div
-              key={idx}
-              className={`gift-book-column ${isLatest ? "latest" : ""}`}
-              data-index={idx}>
-              <div className="book-cell name-cell column-top">
-                <div className="name">{formatName(gift.name)}</div>
-              </div>
-              <div className="book-cell amount-cell column-bottom">
-                <div className="amount-chinese">
-                  {amountToChinese(gift.amount)}
+      {/* 礼簿内容 - 单行列式展示，参考主页面的礼簿展示区域 */}
+      <div className="guest-screen-columns-wrapper">
+        <div className="gift-book-columns guest-screen-columns">
+          {allGifts.map((gift, idx) => {
+            const isLatest = idx === allGifts.length - 1;
+            return (
+              <div
+                key={idx}
+                className={`gift-book-column ${isLatest ? "latest" : ""}`}
+                data-index={idx}>
+                <div className="book-cell name-cell column-top">
+                  <div className="name">{formatName(gift.name)}</div>
+                </div>
+                <div className="book-cell amount-cell column-bottom">
+                  <div className="amount-chinese">
+                    {amountToChinese(gift.amount)}
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );

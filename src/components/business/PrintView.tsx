@@ -82,20 +82,22 @@ export default function PrintView({ event, gifts }: PrintViewProps) {
         </div>
       </div>
 
-      {/* 礼簿内容 - 网格布局 */}
-      <div className="print-gift-columns">
-        {sortedGifts.map((gift, idx) => (
-          <div key={idx} className="print-gift-column">
-            {/* 姓名区域 */}
-            <div className="book-cell name-cell">
-              {formatName(gift.name)}
+      {/* 礼簿内容 - 列式布局，完全参考主页面和副屏 */}
+      <div className="print-gift-columns-wrapper">
+        <div className="print-gift-columns">
+          {sortedGifts.map((gift, idx) => (
+            <div key={idx} className="print-gift-column">
+              {/* 姓名区域 - 上方 */}
+              <div className="book-cell name-cell column-top">
+                {formatName(gift.name)}
+              </div>
+              {/* 金额区域 - 下方 */}
+              <div className="book-cell amount-cell column-bottom">
+                {formatChineseAmount(gift.amount)}
+              </div>
             </div>
-            {/* 金额区域 */}
-            <div className="book-cell amount-cell">
-              {formatChineseAmount(gift.amount)}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* 页脚 */}

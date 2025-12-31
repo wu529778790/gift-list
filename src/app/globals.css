@@ -452,30 +452,37 @@ input[type="checkbox"].themed-ring:checked {
     font-weight: bold;
   }
 
-  /* 打印礼簿网格 - 横屏优化 */
+  /* 打印礼簿网格 - 横屏优化，列式布局 */
+  .print-gift-columns-wrapper {
+    width: 100%;
+    height: calc(100% - 45mm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .print-gift-columns {
     display: grid;
-    /* 默认12列，横屏A4可以容纳更多 */
     grid-template-columns: repeat(12, 1fr);
-    gap: 1mm;
-    /* 自动换行，确保垂直居中 */
+    gap: 1.5mm;
     grid-auto-rows: minmax(35mm, auto);
+    width: 100%;
+    height: 100%;
     align-content: center;
     justify-content: center;
-    flex: 1; /* 占据剩余空间 */
-    overflow: visible;
-    margin: 2mm 0;
   }
 
   .print-gift-column {
     display: grid;
     grid-template-rows: 1fr 1.2fr;
-    border: 1px solid #ccc;
-    border-radius: 2px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
     overflow: hidden;
     page-break-inside: avoid;
-    align-items: center; /* 内容垂直居中 */
-    justify-items: center; /* 内容水平居中 */
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    min-width: 0;
+    height: 100%;
   }
 
   .print-gift-column .book-cell {
@@ -485,7 +492,7 @@ input[type="checkbox"].themed-ring:checked {
     text-orientation: mixed;
     font-family: "KaiTi", "楷体", serif;
     font-weight: bold;
-    padding: 8px 0;
+    padding: 10px 0;
     overflow: hidden;
     text-align: center;
     line-height: 1.2;
@@ -493,15 +500,21 @@ input[type="checkbox"].themed-ring:checked {
     height: 100%;
   }
 
+  .print-gift-column .column-top {
+    border-bottom: 2px solid #ccc;
+  }
+
   .print-gift-column .name-cell {
-    border-bottom: 1px solid #ccc;
-    font-size: 18pt;
+    font-size: 19pt;
     color: #333;
+    background: white;
   }
 
   .print-gift-column .amount-cell {
-    font-size: 16pt;
+    font-size: 17pt;
     color: #333;
+    background: white;
+    border-top: none;
   }
 
   /* 打印页脚 */
@@ -521,18 +534,68 @@ input[type="checkbox"].themed-ring:checked {
   }
 }
 
+/* ==================== 礼簿容器包装器 ==================== */
+/* 主页面礼簿展示区域包装器 */
+.gift-book-columns-wrapper {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+/* 副屏礼簿展示区域包装器 */
+.guest-screen-columns-wrapper {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 30px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 打印页面礼簿展示区域包装器 */
+.print-gift-columns-wrapper {
+  width: 100%;
+  height: calc(100% - 45mm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ==================== 礼簿表格样式 - 方案A：每列独立卡片 ==================== */
 .gift-book-columns {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 2px;
-  border-top: 2px solid var(--primary-border-color);
+  border: 2px solid var(--primary-border-color);
   min-height: 0;
   background: var(--primary-border-color);
   border-radius: 8px;
   overflow: visible;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05), 0 2px 8px var(--shadow-color);
   padding: 4px;
+  width: 100%;
+  height: 100%;
+  align-content: stretch;
+  justify-content: stretch;
+  box-sizing: border-box;
+}
+
+/* 副屏专用的礼簿网格，单行展示 */
+.guest-screen-columns {
+  border: 3px solid var(--primary-color);
+  gap: 3px;
+  padding: 6px;
+  grid-auto-rows: 1fr;
+  align-content: stretch;
+  justify-content: stretch;
 }
 
 .gift-book-column {
@@ -549,6 +612,9 @@ input[type="checkbox"].themed-ring:checked {
   position: relative;
   z-index: 1;
   border: 1px solid var(--primary-border-color);
+  min-width: 0; /* 防止列过宽 */
+  height: 100%; /* 确保列高度撑满容器 */
+  min-height: 0; /* 允许网格项收缩 */
 }
 
 /* 列 hover 效果 - 纯CSS实现，无需JS */
@@ -1064,13 +1130,13 @@ input[type="checkbox"].themed-ring:checked {
   display: grid;
   grid-template-columns: repeat(12, 1fr); /* 固定12列，单行展示 */
   grid-auto-rows: 1fr; /* 高度自适应，填满容器 */
-  gap: 2px;
+  gap: 3px;
   border: 3px solid var(--primary-color);
   min-height: 0;
   background: var(--primary-border-color);
   border-radius: 8px;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 4px;
+  padding: 6px;
   height: calc(100% - 60px); /* 调整为标题高度100px + margin */
   margin: 20px 30px 24px 30px;
   box-sizing: border-box;
@@ -1079,25 +1145,7 @@ input[type="checkbox"].themed-ring:checked {
   contain: layout; /* 限制布局影响范围 */
 }
 
-/* 礼金列 - 完全复制主页面的 gift-book-column */
-.gift-book-column {
-  display: grid;
-  grid-template-rows: 1fr 1.6fr;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.3) 100%
-  );
-  border-radius: 6px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  position: relative;
-  z-index: 1;
-  border: 1px solid var(--primary-border-color);
-  min-width: 0; /* 防止列过宽 */
-  height: 100%; /* 确保列高度撑满容器 */
-  min-height: 0; /* 允许网格项收缩 */
-}
+/* 礼金列 - 完全复制主页面的 gift-book-column (已合并到主定义中，此处保留兼容性) */
 
 /* 最新记录高亮 - 参考主页面 hover 效果 */
 .gift-book-column.latest {
@@ -1110,11 +1158,6 @@ input[type="checkbox"].themed-ring:checked {
   z-index: 10;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border-color: var(--primary-color);
-}
-
-/* 确保hover效果不会导致容器溢出 */
-.guest-screen-wrapper .gift-book-columns {
-  contain: layout; /* 限制布局影响范围 */
 }
 
 /* 列内部的分隔线 - 完全复制主页面 */
@@ -1304,174 +1347,3 @@ input[type="checkbox"].themed-ring:checked {
   color: var(--primary-text-color);
 }
 
-/* 响应式调整 - 副屏单行展示 */
-@media (max-width: 1024px) {
-  /* 标题区域响应式 */
-  .guest-screen-header {
-    height: 85px;
-    padding: 20px 16px;
-  }
-
-  .guest-screen-title {
-    font-size: 3.2rem;
-    letter-spacing: 10px;
-    padding: 10px 20px;
-  }
-
-  /* 副屏网格容器响应式 - 12列单行，高度自适应 */
-  .guest-screen-wrapper .gift-book-columns {
-    grid-template-columns: repeat(12, 1fr);
-    grid-auto-rows: 1fr;
-    padding: 3px;
-    border-width: 2px;
-    margin: 16px 24px 20px 24px;
-    height: calc(100% - 45px); /* 85px标题 + 16px+20px边距 - 76px */
-  }
-
-  /* 副屏网格布局响应式 */
-  .guest-screen-wrapper .book-cell {
-    font-size: clamp(18px, 2vw, 28px);
-    letter-spacing: 6px;
-    padding: 10px 0;
-  }
-
-  .guest-screen-wrapper .name-cell .name {
-    font-size: 26px;
-    min-height: 7em;
-    padding: 15px 0;
-  }
-
-  .guest-screen-wrapper .amount-cell .amount-chinese {
-    font-size: 24px;
-    padding: 15px 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .guest-screen-wrapper {
-    padding: 4px;
-  }
-
-  .guest-screen-header {
-    height: 70px;
-    padding: 16px 8px;
-  }
-
-  .guest-screen-title {
-    font-size: 2.4rem;
-    letter-spacing: 8px;
-    padding: 8px 16px;
-  }
-
-  /* 副屏网格容器响应式 - 8列单行，高度自适应 */
-  .guest-screen-wrapper .gift-book-columns {
-    grid-template-columns: repeat(8, 1fr);
-    grid-auto-rows: 1fr;
-    gap: 1px;
-    padding: 2px;
-    border-width: 2px;
-    margin: 12px 16px 16px 16px;
-    height: calc(100% - 38px); /* 70px标题 + 16px+16px边距 - 64px */
-  }
-
-  .guest-screen-wrapper .book-cell {
-    font-size: 18px;
-    letter-spacing: 4px;
-    padding: 8px 0;
-  }
-
-  .guest-screen-wrapper .name-cell .name {
-    font-size: 22px;
-    min-height: 6em;
-    padding: 12px 0;
-  }
-
-  .guest-screen-wrapper .amount-cell .amount-chinese {
-    font-size: 20px;
-    padding: 12px 0;
-  }
-}
-
-@media (max-width: 640px) {
-  /* 标题区域响应式 */
-  .guest-screen-header {
-    height: 60px;
-    padding: 12px 6px;
-  }
-
-  .guest-screen-title {
-    font-size: 2rem;
-    letter-spacing: 6px;
-    padding: 6px 12px;
-  }
-
-  /* 副屏网格容器响应式 - 6列单行，高度自适应 */
-  .guest-screen-wrapper .gift-book-columns {
-    grid-template-columns: repeat(6, 1fr);
-    grid-auto-rows: 1fr;
-    gap: 1px;
-    padding: 2px;
-    border-width: 1px;
-    margin: 8px 12px 12px 12px;
-    height: calc(100% - 28px); /* 60px标题 + 8px+12px边距 - 52px */
-  }
-
-  .guest-screen-wrapper .book-cell {
-    font-size: 16px;
-    letter-spacing: 3px;
-    padding: 6px 0;
-  }
-
-  .guest-screen-wrapper .name-cell .name {
-    font-size: 20px;
-    min-height: 5em;
-    padding: 10px 0;
-  }
-
-  .guest-screen-wrapper .amount-cell .amount-chinese {
-    font-size: 18px;
-    padding: 10px 0;
-  }
-}
-
-@media (max-width: 480px) {
-  /* 标题区域响应式 */
-  .guest-screen-header {
-    height: 55px;
-    padding: 10px 4px;
-  }
-
-  .guest-screen-title {
-    font-size: 1.6rem;
-    letter-spacing: 4px;
-    padding: 4px 8px;
-  }
-
-  /* 副屏网格容器响应式 - 4列单行，高度自适应 */
-  .guest-screen-wrapper .gift-book-columns {
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 1fr;
-    gap: 1px;
-    padding: 1px;
-    border-width: 1px;
-    margin: 6px 8px 10px 8px;
-    height: calc(100% - 24px); /* 55px标题 + 6px+10px边距 - 47px */
-  }
-
-  .guest-screen-wrapper .book-cell {
-    font-size: 14px;
-    letter-spacing: 2px;
-    padding: 5px 0;
-  }
-
-  .guest-screen-wrapper .name-cell .name {
-    font-size: 18px;
-    min-height: 4em;
-    padding: 8px 0;
-  }
-
-  .guest-screen-wrapper .amount-cell .amount-chinese {
-    font-size: 16px;
-    padding: 8px 0;
-  }
-}
