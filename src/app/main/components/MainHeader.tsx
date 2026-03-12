@@ -10,6 +10,8 @@ interface MainHeaderProps {
   onExportExcel: () => void;
   onOpenGuestScreen: () => void;
   onOpenSearch: () => void;
+  voiceEnabled: boolean;
+  onToggleVoice: () => void;
 }
 
 export default function MainHeader({
@@ -20,6 +22,8 @@ export default function MainHeader({
   onExportExcel,
   onOpenGuestScreen,
   onOpenSearch,
+  voiceEnabled,
+  onToggleVoice,
 }: MainHeaderProps) {
 
   return (
@@ -38,6 +42,15 @@ export default function MainHeader({
         <div className="flex gap-2 flex-wrap no-print items-center">
           <Button variant="secondary" onClick={onOpenSearch} size="sm">
             🔍 搜索
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={onToggleVoice}
+            title={voiceEnabled ? "关闭语音播报" : "开启语音播报"}
+          >
+            {voiceEnabled ? "🔊" : "🔇"}
           </Button>
 
           <Button variant="danger" size="sm" onClick={onGoHome}>

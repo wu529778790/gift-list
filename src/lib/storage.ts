@@ -138,3 +138,27 @@ export function getGuestScreenData(): GuestScreenData | null {
     return null;
   }
 }
+
+/**
+ * 保存语音播报开关状态
+ */
+export function saveVoiceEnabled(enabled: boolean): void {
+  try {
+    localStorage.setItem('voice_enabled', JSON.stringify(enabled));
+  } catch (error) {
+    console.error('保存语音播报设置失败:', error);
+  }
+}
+
+/**
+ * 获取语音播报开关状态
+ */
+export function getVoiceEnabled(): boolean {
+  try {
+    const stored = localStorage.getItem('voice_enabled');
+    return stored === null ? true : JSON.parse(stored); // 默认开启
+  } catch (error) {
+    console.error('读取语音播报设置失败:', error);
+    return true; // 默认开启
+  }
+}

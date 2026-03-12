@@ -1,4 +1,5 @@
 import { amountToChinese } from '@/utils/format';
+import { getVoiceEnabled } from '@/lib/storage';
 
 /**
  * 语音播报服务
@@ -33,6 +34,13 @@ export function isVoiceSupported(): boolean {
 }
 
 /**
+ * 检查语音播报是否已启用
+ */
+export function isVoiceEnabled(): boolean {
+  return isVoiceSupported() && getVoiceEnabled();
+}
+
+/**
  * 获取可用的中文语音
  */
 function getChineseVoice(): SpeechSynthesisVoice | null {
@@ -64,6 +72,12 @@ export function stopVoice(): void {
  */
 export function speakText(text: string, config: Partial<VoiceConfig> = {}): Promise<void> {
   return new Promise((resolve, reject) => {
+    if (!isVoiceEnabled()) {
+      console.log('语音播报已关闭');
+      resolve();
+      return;
+    }
+
     if (!isVoiceSupported()) {
       console.warn('浏览器不支持语音合成');
       resolve();

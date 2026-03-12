@@ -8,9 +8,9 @@ import { amountToChinese, formatCurrency } from "@/utils/format";
 import { BackupService, ExcelImportResult } from "@/lib/backup";
 import { exportPDF } from "@/lib/pdfExport";
 import ImportExcelModal from "@/components/business/ImportExcelModal";
-import { speakError, speakText, isVoiceSupported } from "@/lib/voice";
+import { speakError, speakText, isVoiceSupported, isVoiceEnabled } from "@/lib/voice";
 import { useToast } from "@/components/ui/Toast";
-import { saveGuestScreenData } from "@/lib/storage";
+import { saveGuestScreenData, getVoiceEnabled, saveVoiceEnabled } from "@/lib/storage";
 import { useGiftStats } from "@/hooks/useGiftStats";
 import { PAGINATION } from "@/constants/pagination";
 import Button from "@/components/ui/Button";
@@ -48,12 +48,25 @@ export default function MainPage() {
   });
   const [showImportModal, setShowImportModal] = useState(false);
   const [importSuccessMsg, setImportSuccessMsg] = useState<string | null>(null);
+  const [voiceEnabled, setVoiceEnabled] = useState(getVoiceEnabled());
 
   // 搜索和筛选状态
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState<"all" | GiftType>("all");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [showSearchModal, setShowSearchModal] = useState(false);
+
+  // 切换语音播报
+  const handleToggleVoice = useCallback(() => {
+    const newState = !voiceEnabled;
+    setVoiceEnabled(newState);
+    saveVoiceEnabled(newState);
+
+    // 如果开启语音，提示用户
+    if (newState && isVoiceSupported()) {
+      showSuccessToast("语音播报已开启");
+    }
+  }, [voiceEnabled, showSuccessToast]);
 
   // 检查是否有会话，如果没有则返回首页
   useEffect(() => {
@@ -186,7 +199,7 @@ export default function MainPage() {
     if (success) {
       syncDataToGuestScreen();
     } else {
-      if (isVoiceSupported()) {
+      if (isVoiceEnabled()) {
         speakError();
       }
     }
@@ -234,7 +247,7 @@ export default function MainPage() {
           syncDataToGuestScreen();
 
           // 语音播报修改成功
-          if (isVoiceSupported()) {
+          if (isVoiceEnabled()) {
             speakText(
               `修改成功，${updatedData.name}，${amountToChinese(
                 updatedData.amount
@@ -245,14 +258,14 @@ export default function MainPage() {
           return true;
         } else {
           showErrorToast("更新失败，请重试");
-          if (isVoiceSupported()) {
+          if (isVoiceEnabled()) {
             speakError();
           }
           return false;
         }
       } catch (error) {
         showErrorToast("更新失败，请重试");
-        if (isVoiceSupported()) {
+        if (isVoiceEnabled()) {
           speakError();
         }
         return false;
@@ -268,21 +281,21 @@ export default function MainPage() {
         const success = await actions.deleteGift(giftId);
         if (success) {
           // 语音播报删除成功
-          if (isVoiceSupported() && selectedGift?.data) {
+          if (isVoiceEnabled() && selectedGift?.data) {
             speakText(`已删除 ${selectedGift.data.name} 的记录`);
           }
           showSuccessToast("删除成功");
           return true;
         } else {
           showErrorToast("删除失败，请重试");
-          if (isVoiceSupported()) {
+          if (isVoiceEnabled()) {
             speakError();
           }
           return false;
         }
       } catch (error) {
         showErrorToast("删除失败，请重试");
-        if (isVoiceSupported()) {
+        if (isVoiceEnabled()) {
           speakError();
         }
         return false;
@@ -372,6 +385,8 @@ export default function MainPage() {
           onExportExcel={exportData}
           onOpenGuestScreen={openGuestScreen}
           onOpenSearch={() => setShowSearchModal(true)}
+          voiceEnabled={voiceEnabled}
+          onToggleVoice={handleToggleVoice}
         />
 
         {/* 导入成功提示 */}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GiftType } from "@/types";
 import { amountToChinese } from "@/utils/format";
-import { speakGiftData, speakSuccess, isVoiceSupported } from "@/lib/voice";
+import { speakGiftData, speakSuccess, isVoiceEnabled } from "@/lib/voice";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { error } from "@/components/ui/Toast";
@@ -63,7 +63,7 @@ const GiftEntryForm: React.FC<GiftEntryFormProps> = ({
     });
 
     // 语音播报（异步执行，不阻塞表单提交）
-    if (isVoiceSupported()) {
+    if (isVoiceEnabled()) {
       speakGiftData(
         formData.name.trim(),
         amount,
@@ -161,9 +161,14 @@ const GiftEntryForm: React.FC<GiftEntryFormProps> = ({
       </Button>
 
       {/* 语音状态提示 */}
-      {isVoiceSupported() && (
+      {isVoiceEnabled() && (
         <div className="pt-3 border-t themed-border text-xs text-gray-500 text-center">
-          ✅ 语音播报已就绪
+          🔊 语音播报已开启
+        </div>
+      )}
+      {!isVoiceEnabled() && (
+        <div className="pt-3 border-t themed-border text-xs text-gray-400 text-center">
+          🔇 语音播报已关闭
         </div>
       )}
     </form>
