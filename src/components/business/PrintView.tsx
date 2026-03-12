@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Event, GiftData } from '@/types';
-import { amountToChinese } from '@/utils/format';
+import { amountToChinese, formatName } from '@/utils/format';
 
 interface PrintViewProps {
   event: Event;
@@ -59,11 +59,6 @@ export default function PrintView({ event, gifts }: PrintViewProps) {
     return amountToChinese(amount);
   };
 
-  // 格式化姓名（两个字中间加空格）
-  const formatName = (name: string) => {
-    return name.length === 2 ? `${name[0]}　${name[1]}` : name;
-  };
-
   return (
     <div className="print-container">
       {/* 头部信息 */}
@@ -86,7 +81,7 @@ export default function PrintView({ event, gifts }: PrintViewProps) {
       <div className="print-gift-columns-wrapper">
         <div className="print-gift-columns">
           {sortedGifts.map((gift, idx) => (
-            <div key={idx} className="print-gift-column">
+            <div key={`${gift.timestamp}-${gift.name}-${idx}`} className="print-gift-column">
               {/* 姓名区域 - 上方 */}
               <div className="book-cell name-cell column-top">
                 {formatName(gift.name)}

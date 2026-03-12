@@ -90,6 +90,11 @@ export const validateName = (name: string): boolean => {
   return name.trim().length >= 1 && name.trim().length <= 20;
 };
 
+// 格式化姓名（两个字中间加空格）
+export const formatName = (name: string): string => {
+  return name.length === 2 ? `${name[0]}　${name[1]}` : name;
+};
+
 // 防抖函数
 export const debounce = <T extends (...args: any[]) => any>(
   func: T,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { error, success } from "@/components/ui/Toast";
+import { useToast } from "@/components/ui/Toast";
 
 export default function TestData() {
   const navigate = useNavigate();

@@ -111,11 +111,30 @@ export function clearCurrentEvent(): void {
 export function saveGuestScreenData(data: {
   eventName: string;
   theme: string;
-  gifts: any[];
+  gifts: GiftRecord[];
 }): void {
   try {
     localStorage.setItem(STORAGE_KEYS.GUEST_SCREEN_DATA, JSON.stringify(data));
   } catch (error) {
     console.error('保存副屏数据失败:', error);
+  }
+}
+
+/**
+ * 获取副屏数据
+ */
+export interface GuestScreenData {
+  eventName: string;
+  theme: string;
+  gifts: GiftRecord[];
+}
+
+export function getGuestScreenData(): GuestScreenData | null {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEYS.GUEST_SCREEN_DATA);
+    return stored ? JSON.parse(stored) : null;
+  } catch (error) {
+    console.error('读取副屏数据失败:', error);
+    return null;
   }
 }

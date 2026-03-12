@@ -1,5 +1,5 @@
 import { Event, GiftData } from '@/types';
-import { formatDateTime, amountToChinese } from '@/utils/format';
+import { formatDateTime, amountToChinese, formatName } from '@/utils/format';
 
 interface ThemeColors {
   primary: string;
@@ -52,10 +52,7 @@ export function exportPDF(event: Event, gifts: GiftData[]): void {
 
   const giftColumnsHTML = sortedGifts
     .map((gift) => {
-      const name =
-        gift.name.length === 2
-          ? `${gift.name[0]}　${gift.name[1]}`
-          : gift.name;
+      const name = formatName(gift.name);
       const amountChinese = amountToChinese(gift.amount);
       return `
         <div class="print-gift-column">

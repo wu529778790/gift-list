@@ -1,4 +1,4 @@
-import { amountToChinese } from '@/utils/format';
+import { amountToChinese, formatName } from '@/utils/format';
 
 interface Gift {
   record: { id: string };
@@ -40,9 +40,7 @@ export default function GiftBookDisplay({
             <div className="book-cell name-cell column-top">
               {hasData ? (
                 <div className="name">
-                  {gift.data!.name.length === 2
-                    ? `${gift.data!.name[0]}　${gift.data!.name[1]}`
-                    : gift.data!.name}
+                  {formatName(gift.data!.name)}
                 </div>
               ) : (
                 <span className="text-gray-300 print-placeholder">

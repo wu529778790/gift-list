@@ -62,17 +62,47 @@ export default function MainPage() {
     }
   }, [state.currentEvent, navigate]);
 
-  // 当礼物数据变化时，同步到副屏
-  useEffect(() => {
-    syncDataToGuestScreen();
-  }, [state.gifts, state.currentEvent?.id]);
-
   if (!state.currentEvent) {
     return null;
   }
 
   // 统计相关 - 使用自定义 Hook
   const { validGifts, totalAmount, totalGivers } = useGiftStats(state.gifts);
+
+  // 同步数据到副屏 - 使用 useCallback 优化
+  const syncDataToGuestScreen = useCallback(() => {
+    if (state.currentEvent) {
+      const sortedGifts = validGifts.sort(
+        (a, b) =>
+          new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+      );
+
+      saveGuestScreenData({
+        eventName: state.currentEvent.name,
+        theme:
+          state.currentEvent.theme === "festive"
+            ? "theme-festive"
+            : "theme-solemn",
+        gifts: sortedGifts,
+      });
+
+      // 使用 BroadcastChannel 通知副屏（如果浏览器支持）
+      if (typeof BroadcastChannel !== "undefined") {
+        try {
+          const bc = new BroadcastChannel("guest_screen_sync");
+          bc.postMessage({ type: "update" });
+          bc.close();
+        } catch (e) {
+          console.warn("BroadcastChannel not available:", e);
+        }
+      }
+    }
+  }, [state.currentEvent, validGifts]);
+
+  // 当礼物数据变化时，同步到副屏
+  useEffect(() => {
+    syncDataToGuestScreen();
+  }, [state.gifts, state.currentEvent?.id, syncDataToGuestScreen]);
 
   // 重置页码当数据变化时
   useEffect(() => {
@@ -161,36 +191,6 @@ export default function MainPage() {
       }
     }
   };
-
-  // 同步数据到副屏 - 使用 useCallback 优化
-  const syncDataToGuestScreen = useCallback(() => {
-    if (state.currentEvent) {
-      const sortedGifts = validGifts.sort(
-        (a, b) =>
-          new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-      );
-
-      saveGuestScreenData({
-        eventName: state.currentEvent.name,
-        theme:
-          state.currentEvent.theme === "festive"
-            ? "theme-festive"
-            : "theme-solemn",
-        gifts: sortedGifts,
-      });
-
-      // 使用 BroadcastChannel 通知副屏（如果浏览器支持）
-      if (typeof BroadcastChannel !== "undefined") {
-        try {
-          const bc = new BroadcastChannel("guest_screen_sync");
-          bc.postMessage({ type: "update" });
-          bc.close();
-        } catch (e) {
-          console.warn("BroadcastChannel not available:", e);
-        }
-      }
-    }
-  }, [state.currentEvent, validGifts]);
 
   // 返回首页（清除会话）
   const handleGoHome = () => {
@@ -506,7 +506,7 @@ export default function MainPage() {
           sortOrder={sortOrder}
           setSortOrder={setSortOrder}
           filteredCount={modalFilteredGifts.length}
-          totalCount={allValidGifts.length}
+          totalCount={totalValidCount}
           theme={state.currentEvent.theme}
           filteredGifts={modalFilteredGifts}
         />
