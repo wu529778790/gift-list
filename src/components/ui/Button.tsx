@@ -1,13 +1,9 @@
 import React from 'react';
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'danger' | 'danger-secondary';
   size?: 'sm' | 'md' | 'lg';
-  className?: string;
-  disabled?: boolean;
-  onClick?: () => void;
-  type?: 'button' | 'submit' | 'reset';
   loading?: boolean;
 }
 
@@ -17,9 +13,9 @@ const Button: React.FC<ButtonProps> = ({
   size = 'md',
   className = '',
   disabled = false,
-  onClick,
   type = 'button',
   loading = false,
+  ...props
 }) => {
   const baseClasses = 'font-bold transition-all duration-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2';
 
@@ -40,18 +36,12 @@ const Button: React.FC<ButtonProps> = ({
     ? 'opacity-50 cursor-not-allowed'
     : 'hover-lift hover:shadow-lg';
 
-  const handleClick = () => {
-    if (!disabled && !loading && onClick) {
-      onClick();
-    }
-  };
-
   return (
     <button
       type={type}
       className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${disabledClasses} ${className}`}
-      onClick={handleClick}
       disabled={disabled || loading}
+      {...props}
     >
       {loading ? (
         <span className="inline-flex items-center gap-2">

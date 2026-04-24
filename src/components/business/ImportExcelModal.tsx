@@ -3,7 +3,7 @@ import { BackupService, ExcelPreview, ExcelImportResult } from '@/lib/backup';
 import { Event } from '@/types';
 import { useToast } from '@/components/ui/Toast';
 import Button from '@/components/ui/Button';
-import { error, warning } from '@/components/ui/Toast';
+import { warning } from '@/components/ui/Toast';
 
 interface ImportExcelModalProps {
   isOpen: boolean;

@@ -9,7 +9,6 @@ import {
   getCurrentEvent,
   saveCurrentEvent,
   clearCurrentEvent,
-  saveGuestScreenData,
 } from '@/lib/storage';
 import { createError, getUserFriendlyError } from '@/lib/errorHandler';
 

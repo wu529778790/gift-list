@@ -27,6 +27,12 @@ export interface GiftRecord {
   dataJson: string; // 存储为 JSON 字符串（明文）
 }
 
+// 礼金记录（解析后，供 UI 使用）
+export interface GiftWithRecord {
+  record: GiftRecord;
+  data: GiftData | null;
+}
+
 // 类型定义常量
 export type ThemeType = 'festive' | 'solemn';
 export type GiftType = '现金' | '微信' | '支付宝' | '其他';

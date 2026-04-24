@@ -1,21 +1,12 @@
 import { useState, useEffect } from 'react';
-import { GiftType } from '@/types';
+import { GiftData, GiftType, GiftWithRecord } from '@/types';
 import { amountToChinese } from '@/utils/format';
 import { useToast } from '@/components/ui/Toast';
 import Button from '@/components/ui/Button';
-import { error } from '@/components/ui/Toast';
-
-interface GiftData {
-  name: string;
-  amount: number;
-  type: GiftType;
-  remark?: string;
-  timestamp: string;
-}
 
 interface GiftDetailModalProps {
   isOpen: boolean;
-  gift: { record: { id: string }; data: GiftData } | null;
+  gift: GiftWithRecord | null;
   onClose: () => void;
   onEdit: (giftId: string, updatedData: GiftData) => Promise<boolean>;
   onDelete: (giftId: string) => Promise<boolean>;
@@ -51,6 +42,7 @@ export default function GiftDetailModal({
   }, [gift, isEditing]);
 
   if (!isOpen || !gift || !gift.data) return null;
+  const giftData = gift.data;
 
   const handleAmountChange = (value: string) => {
     setEditFormData({ ...editFormData, amount: value });
@@ -70,7 +62,7 @@ export default function GiftDetailModal({
     }
 
     const updatedData = {
-      ...gift.data,
+      ...giftData,
       name: editFormData.name.trim(),
       amount: amount,
       type: editFormData.type,
@@ -84,7 +76,7 @@ export default function GiftDetailModal({
   };
 
   const handleDelete = async () => {
-    if (confirm(`确定要删除 ${gift.data.name} 的记录吗？金额：¥${gift.data.amount}`)) {
+    if (confirm(`确定要删除 ${giftData.name} 的记录吗？金额：¥${giftData.amount}`)) {
       const success = await onDelete(gift.record.id);
       if (success) {
         onClose();
@@ -96,12 +88,12 @@ export default function GiftDetailModal({
     if (isEditing) {
       setIsEditing(false);
       setEditFormData({
-        name: gift.data.name,
-        amount: gift.data.amount.toString(),
-        type: gift.data.type,
-        remark: gift.data.remark || '',
+        name: giftData.name,
+        amount: giftData.amount.toString(),
+        type: giftData.type,
+        remark: giftData.remark || '',
       });
-      setChineseAmount(amountToChinese(gift.data.amount));
+      setChineseAmount(amountToChinese(giftData.amount));
     } else {
       onClose();
     }

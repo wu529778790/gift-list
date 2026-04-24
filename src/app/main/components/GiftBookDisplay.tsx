@@ -1,17 +1,9 @@
+import { GiftWithRecord } from '@/types';
 import { amountToChinese, formatName } from '@/utils/format';
 
-interface Gift {
-  record: { id: string };
-  data: {
-    name: string;
-    amount: number;
-    abolished?: boolean;
-  } | null;
-}
-
 interface GiftBookDisplayProps {
-  displayGifts: Gift[];
-  onGiftClick: (gift: Gift) => void;
+  displayGifts: GiftWithRecord[];
+  onGiftClick: (gift: GiftWithRecord) => void;
 }
 
 export default function GiftBookDisplay({

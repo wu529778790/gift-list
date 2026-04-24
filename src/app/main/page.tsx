@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { GiftType, GiftData } from "@/types";
+import { GiftType, GiftData, GiftWithRecord } from "@/types";
 import { useAppStore } from "@/store/appStore";
 import MainLayout from "@/components/layout/MainLayout";
 import GiftEntryForm from "@/components/business/GiftEntryForm";
@@ -21,11 +21,6 @@ import GiftBookDisplay from "./components/GiftBookDisplay";
 import ConfirmModal from "./components/ConfirmModal";
 import GiftDetailModal from "./components/GiftDetailModal";
 import SearchFilterModal from "./components/SearchFilterModal";
-
-interface GiftWithRecord {
-  record: { id: string };
-  data: GiftData | null;
-}
 
 interface ConfirmConfig {
   title: string;
@@ -85,7 +80,7 @@ export default function MainPage() {
   // 同步数据到副屏 - 使用 useCallback 优化
   const syncDataToGuestScreen = useCallback(() => {
     if (state.currentEvent) {
-      const sortedGifts = validGifts.sort(
+      const sortedGifts = [...validGifts].sort(
         (a, b) =>
           new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
       );

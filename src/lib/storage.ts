@@ -3,7 +3,7 @@
  * 封装所有 localStorage 和 sessionStorage 操作
  */
 
-import { Event, GiftRecord } from '@/types';
+import { Event, GiftData, GiftRecord } from '@/types';
 
 // Storage Keys
 export const STORAGE_KEYS = {
@@ -111,7 +111,7 @@ export function clearCurrentEvent(): void {
 export function saveGuestScreenData(data: {
   eventName: string;
   theme: string;
-  gifts: GiftRecord[];
+  gifts: GiftData[];
 }): void {
   try {
     localStorage.setItem(STORAGE_KEYS.GUEST_SCREEN_DATA, JSON.stringify(data));
@@ -126,7 +126,7 @@ export function saveGuestScreenData(data: {
 export interface GuestScreenData {
   eventName: string;
   theme: string;
-  gifts: GiftRecord[];
+  gifts: GiftData[];
 }
 
 export function getGuestScreenData(): GuestScreenData | null {

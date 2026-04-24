@@ -4,7 +4,6 @@ import { amountToChinese } from "@/utils/format";
 import { speakGiftData, speakSuccess, isVoiceEnabled } from "@/lib/voice";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { error } from "@/components/ui/Toast";
 
 interface GiftEntryFormProps {
   onSubmit: (giftData: {
@@ -74,7 +73,7 @@ const GiftEntryForm: React.FC<GiftEntryFormProps> = ({
         speakSuccess();
       }).catch(() => {
         // 播报失败也提示成功，因为数据已保存
-        console.log('语音播报失败，但数据已保存');
+        console.warn('语音播报失败，但数据已保存');
       });
     }
 
